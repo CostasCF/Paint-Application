@@ -14,7 +14,7 @@ namespace paint_application_p19057
         public float penWidth { get; set; }        // only one of many Pen properties!
         public List<Point> points { get; set; }    // use PointF for more precision
         
-       
+        
 
         public DrawAction(char type_, Color color_, float penwidth_)
         {

@@ -13,14 +13,14 @@ namespace paint_application_p19057
 {
     public partial class Form1 : Form
     {
-      Pen pen;
         DrawAction myaction = new DrawAction('P', Color.Blue, 3.3f);
         List<DrawAction> actions = new List<DrawAction>();
         List<List<Point>> allactions = new List<List<Point>>();
         public Form1()
         {
             InitializeComponent();
-            pen = new Pen(Color.Black, 3);
+       
+
         }
 
         private void drawingCanvas_Paint(object sender, PaintEventArgs e)
@@ -37,9 +37,10 @@ namespace paint_application_p19057
                     using (Pen pen = new Pen(da.color, da.penWidth))
                         G.DrawLines(pen, da.points.ToArray());
             // else..
-            foreach (List<Point> points in allactions)
-
-                if (points.Count > 1) G.DrawLines(pen, points.ToArray());
+            foreach (DrawAction da in actions)
+                using (Pen pen = new Pen(da.color, da.penWidth))
+                    foreach (List<Point> points in allactions)
+                         if (points.Count > 1) G.DrawLines(pen, points.ToArray());
 
         }
 
@@ -55,13 +56,13 @@ namespace paint_application_p19057
                 myaction.points.Add(e.Location);
             }
         }
+
         private void drawingCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             if (actions.Count > 1)
             {
                 // ToList creates a copy
                 allactions.Add(myaction.points.ToList());
-
                 myaction.points.Clear();
             }
         }
