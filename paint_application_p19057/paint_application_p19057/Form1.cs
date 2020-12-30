@@ -14,20 +14,17 @@ namespace paint_application_p19057
     public partial class Form1 : Form
     {
         DrawAction myaction = new DrawAction('P', Color.Blue, 3.3f);
-        List<DrawAction> actions = new List<DrawAction>();
-        List<List<Point>> allactions = new List<List<Point>>();
+        List<DrawAction> actions = new List<DrawAction>(); //temporary list of every indivisual momentary line 
+        List<List<Point>> allactions = new List<List<Point>>(); //list containing everything the user draws
         public Form1()
         {
             InitializeComponent();
-       
-
         }
 
         private void drawingCanvas_Paint(object sender, PaintEventArgs e)
         {
-            actions.Add(myaction);
+           
             Draw(e.Graphics, actions);
-          
         }
 
         public void Draw(Graphics G, List<DrawAction> actions)
@@ -46,7 +43,8 @@ namespace paint_application_p19057
 
         private void drawingCanvas_MouseDown(object sender, MouseEventArgs e)
         {
-           
+
+            actions.Add(myaction); //saves the object created to actions list
             drawingCanvas.Cursor = Cursors.Cross;
             if (actions.Count > 1)
             {
@@ -54,13 +52,16 @@ namespace paint_application_p19057
                 myaction.points.Clear();
                 // startpoint
                 myaction.points.Add(e.Location);
+
             }
+       
         }
 
         private void drawingCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             if (actions.Count > 1)
             {
+
                 // ToList creates a copy
                 allactions.Add(myaction.points.ToList());
                 myaction.points.Clear();
@@ -75,29 +76,6 @@ namespace paint_application_p19057
             myaction.points.Add(e.Location);
             // let it show
             drawingCanvas.Invalidate();
-        }
-
-        void AddTestActions()
-        {
-            actions.Add(new DrawAction('L', Color.Blue, 3.3f));
-            actions[0].points.Add(new Point(23, 34));
-            actions[0].points.Add(new Point(23, 134));
-            actions.Add(new DrawAction('P', Color.Red, 1.3f));
-            actions[1].points.Add(new Point(11, 11));
-            actions[1].points.Add(new Point(55, 11));
-            actions[1].points.Add(new Point(55, 77));
-            actions[1].points.Add(new Point(11, 77));
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            AddTestActions();
-            Bitmap bmp = new Bitmap(drawingCanvas.ClientSize.Width,
-                                   drawingCanvas.ClientSize.Height);
-            using (Graphics G = Graphics.FromImage(bmp)) Draw(G, actions);
-            drawingCanvas.Image = bmp;
-        }
-
-      
+        }   
     }
 }
