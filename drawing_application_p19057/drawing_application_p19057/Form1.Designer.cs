@@ -82,6 +82,7 @@ namespace drawing_application_p19057
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.moreColorsTp = new System.Windows.Forms.ToolTip(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -170,8 +171,9 @@ namespace drawing_application_p19057
             this.openToolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
             this.openToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem1.Size = new System.Drawing.Size(146, 22);
+            this.openToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem1.Text = "&Open";
+            this.openToolStripMenuItem1.Click += new System.EventHandler(this.openToolStripMenuItem1_Click);
             // 
             // toolStripSeparator
             // 
@@ -599,6 +601,10 @@ namespace drawing_application_p19057
             this.drawingBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseMove);
             this.drawingBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseUp);
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -684,6 +690,7 @@ namespace drawing_application_p19057
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.ToolTip moreColorsTp;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

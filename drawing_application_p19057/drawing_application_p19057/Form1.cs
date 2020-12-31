@@ -30,6 +30,7 @@ namespace drawing_application_p19057
         // Tools for drawing
         Pen pen;
         Bitmap bmp;
+
         public Form1()
         {
             InitializeComponent();
@@ -71,12 +72,12 @@ namespace drawing_application_p19057
 
         private void fileToolStripMenuItem1_MouseHover(object sender, EventArgs e)
         {
-            fileToolStripMenuItem1.BackColor = Color.Red;
+           // fileToolStripMenuItem1.BackColor = Color.Red;
         }
 
         private void fileToolStripMenuItem1_MouseMove(object sender, MouseEventArgs e)
         {
-            fileToolStripMenuItem1.BackColor = Color.Red;
+          //  fileToolStripMenuItem1.BackColor = Color.Red;
         }
 
         private void moreColors_MouseLeave(object sender, EventArgs e)
@@ -193,6 +194,20 @@ namespace drawing_application_p19057
             }
 
 
+        }
+
+        private void openToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            saveFileDialog1.Filter = "jpg files (*.jpg)|*.jpg|All files (*.*)|*.*";
+           // saveFileDialog1.FilterIndex = 2;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+               
+                bmp = new Bitmap(openFileDialog1.OpenFile());
+                drawingBox.Image = bmp;
+            }
         }
     }
 
