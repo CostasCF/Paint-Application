@@ -107,5 +107,23 @@
   <ItemGroup>
     <None Include="Resources\maximize_button_16px.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ball_point_pen_64px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\line_32px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\circle_50px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\square_24px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8_paint_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\more_50px.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -63,6 +63,46 @@ namespace drawing_application_p19057.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ball_point_pen_64px {
+            get {
+                object obj = ResourceManager.GetObject("ball_point_pen_64px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap circle_50px {
+            get {
+                object obj = ResourceManager.GetObject("circle_50px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_paint_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_paint_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap line_32px {
+            get {
+                object obj = ResourceManager.GetObject("line_32px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap maximize_button_16px {
             get {
                 object obj = ResourceManager.GetObject("maximize_button_16px", resourceCulture);
@@ -123,6 +163,16 @@ namespace drawing_application_p19057.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap more_50px {
+            get {
+                object obj = ResourceManager.GetObject("more_50px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Screenshot_10 {
             get {
                 object obj = ResourceManager.GetObject("Screenshot_10", resourceCulture);
@@ -136,6 +186,16 @@ namespace drawing_application_p19057.Properties {
         internal static System.Drawing.Bitmap Screenshot_9 {
             get {
                 object obj = ResourceManager.GetObject("Screenshot_9", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap square_24px {
+            get {
+                object obj = ResourceManager.GetObject("square_24px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
