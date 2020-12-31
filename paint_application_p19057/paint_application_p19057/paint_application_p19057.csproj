@@ -66,6 +66,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -79,6 +80,48 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ball_point_pen_64px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\circle_50px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_50px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_50px1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8_eraser_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8_eraser_641.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8_paint_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8_undo_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\line_32px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minimize_window_50px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\more_50px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\square_24px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
