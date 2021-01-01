@@ -27,10 +27,10 @@ namespace drawing_application_p19057
         // List of user's points he creates
         private List<Point> currentCurve = new List<Point>();
         private List<PenSettings> curves = new List<PenSettings>();
-
+        private List<PenSettings> curvesRedo = new List<PenSettings>();
         // Tools for drawing
         private Pen pen;
-         private Bitmap bmp;
+        private Bitmap bmp;
         PrintDialog pd;
         PrintDocument doc;
         public Form1()
@@ -105,6 +105,7 @@ namespace drawing_application_p19057
             {
                 PenSettings penSettings = new PenSettings(pen, currentCurve.ToList()); // Copy the list so it not by reference
                 curves.Add(penSettings);
+                curvesRedo.Add(penSettings);
             }
 
             currentCurve.Clear();
@@ -214,6 +215,7 @@ namespace drawing_application_p19057
 
         }
 
+        //printing settings
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Show print dialog
@@ -255,6 +257,28 @@ namespace drawing_application_p19057
             clearningSequence();
         }
 
+
+        //editing settings
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+
+            if (curves.Count > 0)
+            {
+                
+                curves.RemoveAt(curves.Count - 1);
+                drawingBox.Invalidate();
+            }
+        }
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (curves.Count >= 0)
+            {
+                curves = curvesRedo;
+               // curvesRedo.Clear();
+                drawingBox.Invalidate();
+            }
+        }
         private void clearningSequence()
         {
             if (drawingBox.Image != null)
@@ -266,7 +290,7 @@ namespace drawing_application_p19057
             drawingBox.Invalidate();
         }
 
-   
+      
     }
 
 
