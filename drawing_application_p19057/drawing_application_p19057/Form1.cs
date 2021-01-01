@@ -28,14 +28,15 @@ namespace drawing_application_p19057
         private List<PenSettings> curves = new List<PenSettings>();
 
         // Tools for drawing
-        Pen pen;
-        Bitmap bmp;
+         private Pen pen;
+         private bool imageExists = false;
+         private Bitmap bmp;
 
         public Form1()
         {
             InitializeComponent();
             pen = new Pen(Color.Black, 2);
-            menuStrip1.Renderer = new ToolStripProfessionalRenderer(new TestColorTable());
+            menuStrip1.Renderer = new ToolStripProfessionalRenderer(new ColorTable());
         }
 
 
@@ -156,13 +157,15 @@ namespace drawing_application_p19057
         //menu options
         private void openToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+
+            clearningSequence(); //cleaning everything before opening a new file so we can avoid memory leaks.
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
             saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
             // saveFileDialog1.FilterIndex = 2;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-               
+                imageExists = true;
                 bmp = new Bitmap(openFileDialog1.OpenFile());
                 drawingBox.Image = bmp;
             }
@@ -218,6 +221,16 @@ namespace drawing_application_p19057
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            clearningSequence();
+        }
+
+        private void clearningSequence()
+        {
+            if (drawingBox.Image != null)
+            {
+                drawingBox.Image.Dispose();
+                drawingBox.Image = null;
+            }
             curves.Clear();
             drawingBox.Invalidate();
         }
@@ -237,9 +250,9 @@ namespace drawing_application_p19057
         }
     }
     //custom Menu strip color
-    public class TestColorTable : ProfessionalColorTable
+    public class ColorTable : ProfessionalColorTable
     {
-        Color color = Color.FromArgb(20, 20, 20);
+        Color color = Color.FromArgb(63, 63, 65);
 
         public override Color MenuItemSelected
         {
