@@ -35,6 +35,7 @@ namespace drawing_application_p19057
         {
             InitializeComponent();
             pen = new Pen(Color.Black, 2);
+            menuStrip1.Renderer = new ToolStripProfessionalRenderer(new TestColorTable());
         }
 
 
@@ -151,9 +152,24 @@ namespace drawing_application_p19057
             pen.Color = Color.Green;
         }
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
 
+        //menu options
+        private void openToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+            // saveFileDialog1.FilterIndex = 2;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+               
+                bmp = new Bitmap(openFileDialog1.OpenFile());
+                drawingBox.Image = bmp;
+            }
+        }
+
+        private void saveToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
             // Displays a SaveFileDialog so the user can save the Image they drawed
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
@@ -182,7 +198,7 @@ namespace drawing_application_p19057
                         drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
                         bmp.Save(fs, ImageFormat.Bmp);
                         break;
-                       
+
                     case 3:
                         bmp = new Bitmap(drawingBox.ClientSize.Width, drawingBox.ClientSize.Height);
                         drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
@@ -193,21 +209,17 @@ namespace drawing_application_p19057
                 fs.Close();
             }
 
-
         }
 
-        private void openToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            this.Close();
+        }
 
-            saveFileDialog1.Filter = "jpg files (*.jpg)|*.jpg|All files (*.*)|*.*";
-           // saveFileDialog1.FilterIndex = 2;
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-               
-                bmp = new Bitmap(openFileDialog1.OpenFile());
-                drawingBox.Image = bmp;
-            }
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            curves.Clear();
+            drawingBox.Invalidate();
         }
     }
 
@@ -224,5 +236,48 @@ namespace drawing_application_p19057
             Points = points;
         }
     }
+    //custom Menu strip color
+    public class TestColorTable : ProfessionalColorTable
+    {
+        Color color = Color.FromArgb(20, 20, 20);
+
+        public override Color MenuItemSelected
+        {
+            get { return Color.Gray; }
+        }
+
+        public override Color MenuBorder  //added for changing the menu border
+        {
+            get { return Color.Transparent; }
+        }
+     
+
+        public override Color MenuItemBorder
+        {
+            get { return color; }
+        }
+
+        public override Color MenuItemSelectedGradientBegin
+        {
+            get { return color; }
+        }
+
+        public override Color MenuItemSelectedGradientEnd
+        {
+            get { return color; }
+        }
+
+        public override Color MenuItemPressedGradientBegin
+        {
+            get { return color; }
+        }
+
+        public override Color MenuItemPressedGradientEnd
+        {
+            get { return color; }
+        }
+
+    }
+
 
 }
