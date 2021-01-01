@@ -72,7 +72,7 @@ namespace drawing_application_p19057
             this.blueBox = new System.Windows.Forms.PictureBox();
             this.redBox = new System.Windows.Forms.PictureBox();
             this.circleBtn = new System.Windows.Forms.Button();
-            this.sqaureBtn = new System.Windows.Forms.Button();
+            this.squareBtn = new System.Windows.Forms.Button();
             this.lineBtn = new System.Windows.Forms.Button();
             this.penBtn = new System.Windows.Forms.Button();
             this.stripPanel = new System.Windows.Forms.Panel();
@@ -106,7 +106,7 @@ namespace drawing_application_p19057
             this.topPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.topPanel.Location = new System.Drawing.Point(0, 0);
             this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(920, 27);
+            this.topPanel.Size = new System.Drawing.Size(1000, 27);
             this.topPanel.TabIndex = 1;
             this.topPanel.DoubleClick += new System.EventHandler(this.topPanel_DoubleClick);
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
@@ -114,11 +114,11 @@ namespace drawing_application_p19057
             // warningLbl
             // 
             this.warningLbl.AutoSize = true;
-            this.warningLbl.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.warningLbl.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.warningLbl.ForeColor = System.Drawing.Color.White;
-            this.warningLbl.Location = new System.Drawing.Point(387, 4);
+            this.warningLbl.Location = new System.Drawing.Point(311, 7);
             this.warningLbl.Name = "warningLbl";
-            this.warningLbl.Size = new System.Drawing.Size(47, 17);
+            this.warningLbl.Size = new System.Drawing.Size(49, 16);
             this.warningLbl.TabIndex = 10;
             this.warningLbl.Text = "label1";
             // 
@@ -386,7 +386,7 @@ namespace drawing_application_p19057
             this.exitBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.exitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exitBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.exitBtn.Location = new System.Drawing.Point(879, 3);
+            this.exitBtn.Location = new System.Drawing.Point(959, 3);
             this.exitBtn.Name = "exitBtn";
             this.exitBtn.Size = new System.Drawing.Size(38, 21);
             this.exitBtn.TabIndex = 2;
@@ -405,7 +405,7 @@ namespace drawing_application_p19057
             this.maximizeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.maximizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.maximizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.maximizeBtn.Location = new System.Drawing.Point(844, 3);
+            this.maximizeBtn.Location = new System.Drawing.Point(924, 3);
             this.maximizeBtn.Name = "maximizeBtn";
             this.maximizeBtn.Size = new System.Drawing.Size(29, 18);
             this.maximizeBtn.TabIndex = 1;
@@ -424,7 +424,7 @@ namespace drawing_application_p19057
             this.minimizeBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.minimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.minimizeBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.minimizeBtn.Location = new System.Drawing.Point(809, 3);
+            this.minimizeBtn.Location = new System.Drawing.Point(889, 3);
             this.minimizeBtn.Name = "minimizeBtn";
             this.minimizeBtn.Size = new System.Drawing.Size(29, 21);
             this.minimizeBtn.TabIndex = 0;
@@ -440,13 +440,13 @@ namespace drawing_application_p19057
             this.menuPanel.Controls.Add(this.blueBox);
             this.menuPanel.Controls.Add(this.redBox);
             this.menuPanel.Controls.Add(this.circleBtn);
-            this.menuPanel.Controls.Add(this.sqaureBtn);
+            this.menuPanel.Controls.Add(this.squareBtn);
             this.menuPanel.Controls.Add(this.lineBtn);
             this.menuPanel.Controls.Add(this.penBtn);
             this.menuPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.menuPanel.Location = new System.Drawing.Point(0, 27);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(48, 609);
+            this.menuPanel.Size = new System.Drawing.Size(48, 573);
             this.menuPanel.TabIndex = 2;
             // 
             // moreColors
@@ -455,7 +455,7 @@ namespace drawing_application_p19057
             this.moreColors.BackgroundImage = global::drawing_application_p19057.Properties.Resources.more_50px;
             this.moreColors.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.moreColors.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.moreColors.Location = new System.Drawing.Point(9, 354);
+            this.moreColors.Location = new System.Drawing.Point(3, 522);
             this.moreColors.Name = "moreColors";
             this.moreColors.Size = new System.Drawing.Size(33, 26);
             this.moreColors.TabIndex = 9;
@@ -469,7 +469,7 @@ namespace drawing_application_p19057
             // 
             this.greenBox.BackColor = System.Drawing.Color.Green;
             this.greenBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.greenBox.Location = new System.Drawing.Point(9, 318);
+            this.greenBox.Location = new System.Drawing.Point(3, 486);
             this.greenBox.Name = "greenBox";
             this.greenBox.Size = new System.Drawing.Size(33, 30);
             this.greenBox.TabIndex = 8;
@@ -480,7 +480,7 @@ namespace drawing_application_p19057
             // 
             this.yellowBox.BackColor = System.Drawing.Color.Yellow;
             this.yellowBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.yellowBox.Location = new System.Drawing.Point(9, 282);
+            this.yellowBox.Location = new System.Drawing.Point(3, 450);
             this.yellowBox.Name = "yellowBox";
             this.yellowBox.Size = new System.Drawing.Size(33, 30);
             this.yellowBox.TabIndex = 7;
@@ -491,7 +491,7 @@ namespace drawing_application_p19057
             // 
             this.blueBox.BackColor = System.Drawing.Color.Blue;
             this.blueBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.blueBox.Location = new System.Drawing.Point(9, 247);
+            this.blueBox.Location = new System.Drawing.Point(3, 415);
             this.blueBox.Name = "blueBox";
             this.blueBox.Size = new System.Drawing.Size(33, 30);
             this.blueBox.TabIndex = 6;
@@ -502,7 +502,7 @@ namespace drawing_application_p19057
             // 
             this.redBox.BackColor = System.Drawing.Color.Red;
             this.redBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.redBox.Location = new System.Drawing.Point(9, 210);
+            this.redBox.Location = new System.Drawing.Point(3, 379);
             this.redBox.Name = "redBox";
             this.redBox.Size = new System.Drawing.Size(33, 30);
             this.redBox.TabIndex = 5;
@@ -511,7 +511,7 @@ namespace drawing_application_p19057
             // 
             // circleBtn
             // 
-            this.circleBtn.BackColor = System.Drawing.Color.LightGray;
+            this.circleBtn.BackColor = System.Drawing.Color.WhiteSmoke;
             this.circleBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.circle_50px;
             this.circleBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.circleBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -520,32 +520,34 @@ namespace drawing_application_p19057
             this.circleBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.circleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.circleBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.circleBtn.Location = new System.Drawing.Point(3, 81);
+            this.circleBtn.Location = new System.Drawing.Point(0, 258);
             this.circleBtn.Name = "circleBtn";
             this.circleBtn.Size = new System.Drawing.Size(42, 33);
             this.circleBtn.TabIndex = 3;
             this.circleBtn.UseVisualStyleBackColor = false;
+            this.circleBtn.Click += new System.EventHandler(this.circleBtn_Click);
             // 
-            // sqaureBtn
+            // squareBtn
             // 
-            this.sqaureBtn.BackColor = System.Drawing.Color.LightGray;
-            this.sqaureBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.square_24px;
-            this.sqaureBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.sqaureBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.sqaureBtn.FlatAppearance.BorderSize = 0;
-            this.sqaureBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Silver;
-            this.sqaureBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
-            this.sqaureBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.sqaureBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.sqaureBtn.Location = new System.Drawing.Point(3, 120);
-            this.sqaureBtn.Name = "sqaureBtn";
-            this.sqaureBtn.Size = new System.Drawing.Size(42, 33);
-            this.sqaureBtn.TabIndex = 4;
-            this.sqaureBtn.UseVisualStyleBackColor = false;
+            this.squareBtn.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.squareBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.square_24px;
+            this.squareBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.squareBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.squareBtn.FlatAppearance.BorderSize = 0;
+            this.squareBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Silver;
+            this.squareBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.squareBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.squareBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.squareBtn.Location = new System.Drawing.Point(0, 297);
+            this.squareBtn.Name = "squareBtn";
+            this.squareBtn.Size = new System.Drawing.Size(42, 33);
+            this.squareBtn.TabIndex = 4;
+            this.squareBtn.UseVisualStyleBackColor = false;
+            this.squareBtn.Click += new System.EventHandler(this.sqaureBtn_Click);
             // 
             // lineBtn
             // 
-            this.lineBtn.BackColor = System.Drawing.Color.LightGray;
+            this.lineBtn.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lineBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.line_32px;
             this.lineBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.lineBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -554,15 +556,16 @@ namespace drawing_application_p19057
             this.lineBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.lineBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lineBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.lineBtn.Location = new System.Drawing.Point(3, 42);
+            this.lineBtn.Location = new System.Drawing.Point(0, 219);
             this.lineBtn.Name = "lineBtn";
             this.lineBtn.Size = new System.Drawing.Size(42, 33);
             this.lineBtn.TabIndex = 2;
             this.lineBtn.UseVisualStyleBackColor = false;
+            this.lineBtn.Click += new System.EventHandler(this.lineBtn_Click);
             // 
             // penBtn
             // 
-            this.penBtn.BackColor = System.Drawing.Color.LightGray;
+            this.penBtn.BackColor = System.Drawing.Color.WhiteSmoke;
             this.penBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.ball_point_pen_64px;
             this.penBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.penBtn.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -571,11 +574,12 @@ namespace drawing_application_p19057
             this.penBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.penBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.penBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.penBtn.Location = new System.Drawing.Point(3, 3);
+            this.penBtn.Location = new System.Drawing.Point(3, 36);
             this.penBtn.Name = "penBtn";
             this.penBtn.Size = new System.Drawing.Size(42, 33);
             this.penBtn.TabIndex = 1;
             this.penBtn.UseVisualStyleBackColor = false;
+            this.penBtn.Click += new System.EventHandler(this.penBtn_Click);
             // 
             // stripPanel
             // 
@@ -583,7 +587,7 @@ namespace drawing_application_p19057
             this.stripPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.stripPanel.Location = new System.Drawing.Point(48, 27);
             this.stripPanel.Name = "stripPanel";
-            this.stripPanel.Size = new System.Drawing.Size(872, 3);
+            this.stripPanel.Size = new System.Drawing.Size(952, 3);
             this.stripPanel.TabIndex = 3;
             // 
             // stripPanel2
@@ -592,7 +596,7 @@ namespace drawing_application_p19057
             this.stripPanel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.stripPanel2.Location = new System.Drawing.Point(48, 30);
             this.stripPanel2.Name = "stripPanel2";
-            this.stripPanel2.Size = new System.Drawing.Size(3, 606);
+            this.stripPanel2.Size = new System.Drawing.Size(3, 570);
             this.stripPanel2.TabIndex = 4;
             // 
             // drawingBox
@@ -602,10 +606,11 @@ namespace drawing_application_p19057
             this.drawingBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.drawingBox.Location = new System.Drawing.Point(0, 0);
             this.drawingBox.Name = "drawingBox";
-            this.drawingBox.Size = new System.Drawing.Size(920, 636);
+            this.drawingBox.Size = new System.Drawing.Size(1000, 600);
             this.drawingBox.TabIndex = 0;
             this.drawingBox.TabStop = false;
             this.drawingBox.Paint += new System.Windows.Forms.PaintEventHandler(this.drawingBox_Paint);
+            this.drawingBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseDown);
             this.drawingBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseMove);
             this.drawingBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseUp);
             // 
@@ -618,7 +623,7 @@ namespace drawing_application_p19057
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(920, 636);
+            this.ClientSize = new System.Drawing.Size(1000, 600);
             this.Controls.Add(this.stripPanel2);
             this.Controls.Add(this.stripPanel);
             this.Controls.Add(this.menuPanel);
@@ -661,7 +666,7 @@ namespace drawing_application_p19057
         private System.Windows.Forms.Button penBtn;
         private System.Windows.Forms.Button circleBtn;
         private System.Windows.Forms.Button lineBtn;
-        private System.Windows.Forms.Button sqaureBtn;
+        private System.Windows.Forms.Button squareBtn;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Panel stripPanel2;
         private System.Windows.Forms.PictureBox redBox;

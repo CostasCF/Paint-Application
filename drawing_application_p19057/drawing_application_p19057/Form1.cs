@@ -40,6 +40,10 @@ namespace drawing_application_p19057
         string path;
         protected Image image;
         protected Thread getImageThread;
+        //bool variables for selecting pen,circle,rectangle,line
+        private bool penActive, lineActive, circleActive, squareActive;
+        private int mouseX,mouseY, mouseX1, mouseY1;
+        Shapes shape;
         public Form1()
         {
             InitializeComponent();
@@ -109,9 +113,21 @@ namespace drawing_application_p19057
         //drawing settings
         private void drawingBox_MouseUp(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Left && circleActive)
+            {
+                mouseX1 = e.X;
+                mouseY1 = e.Y;
+                shape = new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1);
+                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(), shape);
+                 curves.Add(penSettings);
+                drawingBox.Invalidate();
+
+
+            }
             if (currentCurve.Count > 1)
             {
-                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList()); // Copy the list so it not by reference
+                shape = new Shapes(pen, 0,0,0,0);
+                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(),shape); // Copy the list so it not by reference
                 curves.Add(penSettings);
                 curvesRedo.Add(penSettings);
             }
@@ -119,14 +135,20 @@ namespace drawing_application_p19057
             currentCurve.Clear();
             drawingBox.Invalidate();
         }
-
+    
         private void drawingBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+         
+            if (e.Button == MouseButtons.Left && penActive)
             {
                 currentCurve.Add(e.Location);
                 drawingBox.Invalidate();
             }
+        }
+        private void drawingBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseX = e.X;
+            mouseY = e.Y;
         }
 
         private void drawingBox_Paint(object sender, PaintEventArgs e)
@@ -135,9 +157,59 @@ namespace drawing_application_p19057
             if (currentCurve.Count > 1) e.Graphics.DrawCurve(pen, currentCurve.ToArray());
 
             foreach (PenSettings penSettings in curves)
+            {
+                if (penSettings.Points.Count == 0 && circleActive ) e.Graphics.DrawEllipse(penSettings.Pen, shape.MouseX, shape.MouseY, shape.MouseY1 - shape.MouseY, shape.MouseY1 - shape.MouseY);
                 if (penSettings.Points.Count > 1) e.Graphics.DrawCurve(penSettings.Pen, penSettings.Points.ToArray());
+            }
+        }
+ 
+        private void penBtn_Click(object sender, EventArgs e)
+        {
+            penActive = true;
+            penBtn.BackColor = Color.Silver;
+            lineActive = false;
+            squareActive = false;
+            circleActive = false;
+            lineBtn.BackColor = Color.WhiteSmoke;
+            circleBtn.BackColor = Color.WhiteSmoke;
+            squareBtn.BackColor = Color.WhiteSmoke;
+        }
+        private void lineBtn_Click(object sender, EventArgs e)
+        {
+            lineActive = true;
+            lineBtn.BackColor = Color.Silver;
+            penActive = false;
+            squareActive = false;
+            circleActive = false;
+            penBtn.BackColor = Color.WhiteSmoke;
+            circleBtn.BackColor = Color.WhiteSmoke;
+            squareBtn.BackColor = Color.WhiteSmoke;
         }
 
+        private void circleBtn_Click(object sender, EventArgs e)
+        {
+            circleActive = true;
+            circleBtn.BackColor = Color.Silver;
+            lineActive = false;
+            penActive = false;
+            squareActive = false;
+            penBtn.BackColor = Color.WhiteSmoke;
+            squareBtn.BackColor = Color.WhiteSmoke;
+            lineBtn.BackColor = Color.WhiteSmoke;
+        }
+
+        private void sqaureBtn_Click(object sender, EventArgs e)
+        {
+            squareActive = true;
+            squareBtn.BackColor = Color.Silver;
+            circleActive = false;
+            lineActive = false;
+            penActive = false;
+            penBtn.BackColor = Color.WhiteSmoke;
+            circleBtn.BackColor = Color.WhiteSmoke;
+            lineBtn.BackColor = Color.WhiteSmoke;
+        }
+        //colors selection
         private void moreColors_Click(object sender, EventArgs e)
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK) { pen.Color = colorDialog1.Color; }
@@ -177,6 +249,7 @@ namespace drawing_application_p19057
             {
                 bmp = new Bitmap(openFileDialog1.OpenFile());
                 drawingBox.Image = bmp;
+                DisplayWarning("Opened file image: " + openFileDialog1.FileName.ToString(), 9000);
             }
         }
 
@@ -203,18 +276,21 @@ namespace drawing_application_p19057
                         bmp = new Bitmap(drawingBox.ClientSize.Width, drawingBox.ClientSize.Height);
                         drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
                         bmp.Save(fs, ImageFormat.Jpeg);
+                        DisplayWarning("Saved image succesfully to " + fs.Name.ToString(), 9000);
                         break;
 
                     case 2:
                         bmp = new Bitmap(drawingBox.ClientSize.Width, drawingBox.ClientSize.Height);
                         drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
                         bmp.Save(fs, ImageFormat.Bmp);
+                        DisplayWarning("Saved image succesfully to " + fs.Name.ToString(), 9000);
                         break;
 
                     case 3:
                         bmp = new Bitmap(drawingBox.ClientSize.Width, drawingBox.ClientSize.Height);
                         drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
                         bmp.Save(fs, ImageFormat.Gif);
+                        DisplayWarning("Saved image succesfully to " + fs.Name.ToString(), 9000);
                         break;
                 }
 
@@ -361,9 +437,8 @@ namespace drawing_application_p19057
         {
             bmp = new Bitmap(drawingBox.ClientSize.Width, drawingBox.ClientSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
-            drawingBox.Image = bmp;
             Clipboard.SetDataObject(bmp);
-            DisplayWarning("Copied to clipboard!");
+            DisplayWarning("Copied to clipboard!", 4000);
 
         }
 
@@ -375,15 +450,15 @@ namespace drawing_application_p19057
                 drawingBox.Image = Clipboard.GetImage();
             }
 
-            DisplayWarning("Pasted image from the clipboard!");
+            DisplayWarning("Pasted image from the clipboard!", 4000);
 
         }
 
-        //method for displaying warning messages for 4 seconds
-        private void DisplayWarning(String message, int Interval = 4000)
+        //method for displaying warning messages for the specified seconds
+        private void DisplayWarning(String message, int Interval)
         {
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = Interval;
+            timer.Interval = Interval; //sets timer Interval
             warningLbl.Invoke(new Action(() => warningLbl.Text = message));
             warningLbl.Invoke(new Action(() => warningLbl.Visible = true));
 
@@ -393,19 +468,39 @@ namespace drawing_application_p19057
             timer.Enabled = true; // Starts the timer. 
         }
 
+
     }
 
+    public class Shapes
+    {
+        public Pen Pen { get; set; }
+       public int MouseX { get; set; }
+        public int MouseY { get; set; }
+        public int MouseX1{ get; set; }
+        public int MouseY1 { get; set; }
 
+       public Shapes(Pen pen, int mouseX, int mouseY, int mouseX1, int mouseY1)
+        {
+            Pen = new Pen(pen.Color, pen.Width);
+            MouseX = mouseX;
+            MouseY = mouseY;
+            MouseX1 = mouseX1;
+            MouseY1 = mouseY1;
+           //DrawEllipse(pen, mouseX, mouseY, mouseY1 - mouseY, mouseY1 - mouseY);
+        }
+    }
     //pen settings
     public class PenSettings
     {
         public Pen Pen { get; set; }
         public List<Point> Points { get; set; }
 
-        public PenSettings(Pen pen, List<Point> points)
+        public Shapes Shapes;
+        public PenSettings(Pen pen, List<Point> points, Shapes shape)
         {
             Pen = new Pen(pen.Color, pen.Width);
             Points = points;
+            Shapes = shape;
         }
     }
     //custom Menu strip color
