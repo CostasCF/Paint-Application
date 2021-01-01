@@ -41,7 +41,10 @@ namespace drawing_application_p19057
         protected Image image;
         protected Thread getImageThread;
         //bool variables for selecting pen,circle,rectangle,line
-        private bool penActive, lineActive, circleActive, squareActive;
+        private bool penActive = false;
+        private bool lineActive = false;
+        private bool circleActive = false;
+        private bool squareActive = false;
         private int mouseX,mouseY, mouseX1, mouseY1;
         Shapes shape;
         public Form1()
@@ -113,6 +116,10 @@ namespace drawing_application_p19057
         //drawing settings
         private void drawingBox_MouseUp(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Left)
+            {
+
+            }
             if (e.Button == MouseButtons.Left && circleActive)
             {
                 mouseX1 = e.X;
@@ -120,14 +127,26 @@ namespace drawing_application_p19057
                 shape = new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1);
                 PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(), shape);
                  curves.Add(penSettings);
+                curvesRedo.Add(penSettings);
+                drawingBox.Invalidate();
+            }
+
+            if (lineActive)
+            {
+                mouseX1 = e.X;
+                mouseY1 = e.Y;
+                shape = new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1);
+                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(), shape);
+                curves.Add(penSettings);
+                curvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
 
 
             }
             if (currentCurve.Count > 1)
             {
-                shape = new Shapes(pen, 0,0,0,0);
-                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(),shape); // Copy the list so it not by reference
+                shape = new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1); //Zero because only points matter hear
+                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(),shape); 
                 curves.Add(penSettings);
                 curvesRedo.Add(penSettings);
             }
@@ -158,8 +177,18 @@ namespace drawing_application_p19057
 
             foreach (PenSettings penSettings in curves)
             {
-                if (penSettings.Points.Count == 0 && circleActive ) e.Graphics.DrawEllipse(penSettings.Pen, shape.MouseX, shape.MouseY, shape.MouseY1 - shape.MouseY, shape.MouseY1 - shape.MouseY);
-                if (penSettings.Points.Count > 1) e.Graphics.DrawCurve(penSettings.Pen, penSettings.Points.ToArray());
+               if ((penSettings.Points.Count == 0 ) && circleActive )
+              {
+                    e.Graphics.DrawEllipse(penSettings.Pen, penSettings.Shapes.MouseX, penSettings.Shapes.MouseY, penSettings.Shapes.MouseY1 - penSettings.Shapes.MouseY, penSettings.Shapes.MouseY1 - penSettings.Shapes.MouseY);
+
+              }else if ((penSettings.Points.Count == 0) && lineActive )
+               {
+                    e.Graphics.DrawLine(penSettings.Pen, penSettings.Shapes.MouseX, penSettings.Shapes.MouseY, penSettings.Shapes.MouseX1, penSettings.Shapes.MouseY1);
+             }else if(penSettings.Points.Count == 0 && squareActive)
+               {
+                   // e.Graphics.draw
+                }
+              if (penSettings.Points.Count > 1) e.Graphics.DrawCurve(penSettings.Pen, penSettings.Points.ToArray());
             }
         }
  
@@ -474,19 +503,19 @@ namespace drawing_application_p19057
     public class Shapes
     {
         public Pen Pen { get; set; }
-       public int MouseX { get; set; }
-        public int MouseY { get; set; }
+       public  int MouseX { get; set; }
+        public  int MouseY { get; set; }
         public int MouseX1{ get; set; }
         public int MouseY1 { get; set; }
 
        public Shapes(Pen pen, int mouseX, int mouseY, int mouseX1, int mouseY1)
         {
             Pen = new Pen(pen.Color, pen.Width);
-            MouseX = mouseX;
-            MouseY = mouseY;
-            MouseX1 = mouseX1;
-            MouseY1 = mouseY1;
-           //DrawEllipse(pen, mouseX, mouseY, mouseY1 - mouseY, mouseY1 - mouseY);
+             MouseX =  mouseX;
+             MouseY = mouseY;
+             MouseX1 = mouseX1;
+             MouseY1 = mouseY1;
+           
         }
     }
     //pen settings
@@ -495,13 +524,14 @@ namespace drawing_application_p19057
         public Pen Pen { get; set; }
         public List<Point> Points { get; set; }
 
-        public Shapes Shapes;
+        public Shapes Shapes { get; set; }
         public PenSettings(Pen pen, List<Point> points, Shapes shape)
         {
             Pen = new Pen(pen.Color, pen.Width);
             Points = points;
-            Shapes = shape;
+            Shapes = new Shapes(Pen, shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
         }
+
     }
     //custom Menu strip color
     public class ColorTable : ProfessionalColorTable

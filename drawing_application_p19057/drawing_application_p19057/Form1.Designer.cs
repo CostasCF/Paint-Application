@@ -164,8 +164,6 @@ namespace drawing_application_p19057
             this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
             this.fileToolStripMenuItem1.Size = new System.Drawing.Size(39, 21);
             this.fileToolStripMenuItem1.Text = "&File";
-            this.fileToolStripMenuItem1.MouseHover += new System.EventHandler(this.fileToolStripMenuItem1_MouseHover);
-            this.fileToolStripMenuItem1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.fileToolStripMenuItem1_MouseMove);
             // 
             // newToolStripMenuItem
             // 
