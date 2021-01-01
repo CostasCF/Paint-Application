@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -28,10 +29,10 @@ namespace drawing_application_p19057
         private List<PenSettings> curves = new List<PenSettings>();
 
         // Tools for drawing
-         private Pen pen;
-         private bool imageExists = false;
+        private Pen pen;
          private Bitmap bmp;
-
+        PrintDialog pd;
+        PrintDocument doc;
         public Form1()
         {
             InitializeComponent();
@@ -165,7 +166,6 @@ namespace drawing_application_p19057
             // saveFileDialog1.FilterIndex = 2;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                imageExists = true;
                 bmp = new Bitmap(openFileDialog1.OpenFile());
                 drawingBox.Image = bmp;
             }
@@ -214,6 +214,37 @@ namespace drawing_application_p19057
 
         }
 
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Show print dialog
+            pd = new PrintDialog(); //creating print dialog object
+            doc = new PrintDocument(); //creating doc object
+            doc.PrintPage += Doc_PrintPage;
+            pd.Document = doc;
+            if (pd.ShowDialog() == DialogResult.OK)
+                doc.Print();
+        }
+        
+        private void Doc_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            //Print image
+            Bitmap bm = new Bitmap(drawingBox.Width, drawingBox.Height);
+            drawingBox.DrawToBitmap(bm, new Rectangle(0, 0, drawingBox.Width, drawingBox.Height));
+            e.Graphics.DrawImage(bm, 0, 0);
+            bm.Dispose();
+        }
+
+        private void printPreviewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            doc = new PrintDocument();
+            PrintPreviewDialog printPrvDlg = new PrintPreviewDialog();
+            pd = new PrintDialog();
+            doc.PrintPage += Doc_PrintPage;
+            // preview the assigned document
+            printPrvDlg.Document = doc;
+            printPrvDlg.ShowDialog(); // this shows the preview and then show the Printer Dlg below
+
+        }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -234,6 +265,8 @@ namespace drawing_application_p19057
             curves.Clear();
             drawingBox.Invalidate();
         }
+
+   
     }
 
 
