@@ -5,12 +5,14 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Timers;
 
 namespace drawing_application_p19057
 {
@@ -33,11 +35,17 @@ namespace drawing_application_p19057
         private Bitmap bmp;
         PrintDialog pd;
         PrintDocument doc;
+        // Tools for drag and drop images inside the drawingBox
+        protected bool validData;
+        string path;
+        protected Image image;
+        protected Thread getImageThread;
         public Form1()
         {
             InitializeComponent();
             pen = new Pen(Color.Black, 2);
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new ColorTable());
+            warningLbl.Visible = false;
         }
 
 
@@ -274,10 +282,10 @@ namespace drawing_application_p19057
         {
             if (curves.Count >= 0)
             {
-                curves = curvesRedo;
-               // curvesRedo.Clear();
+                curves.AddRange(curvesRedo);
                 drawingBox.Invalidate();
             }
+           
         }
         private void clearningSequence()
         {
@@ -290,7 +298,101 @@ namespace drawing_application_p19057
             drawingBox.Invalidate();
         }
 
-      
+        //drag and drop images onto the drawingBox
+        private bool GetFilename(out string filename, DragEventArgs e)
+        {
+            bool ret = false;
+            filename = String.Empty;
+            if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
+            {
+                Array data = ((IDataObject)e.Data).GetData("FileDrop") as Array;
+                if (data != null)
+                {
+                    if ((data.Length == 1) && (data.GetValue(0) is String))
+                    {
+                        filename = ((string[])data)[0];
+                        string ext = Path.GetExtension(filename).ToLower();
+                        if ((ext == ".jpg") || (ext == ".png") || (ext == ".bmp"))
+                        {
+                            ret = true;
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (validData)
+            {
+                while (getImageThread.IsAlive)
+                {
+                    Application.DoEvents();
+                    Thread.Sleep(0);
+                }
+                drawingBox.Image = image;
+            }
+        }
+
+        protected void LoadImage()
+
+        {
+            image = new Bitmap(path);
+        }
+
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            string filename;
+            validData = GetFilename(out filename, e);
+            if (validData)
+            {
+                path = filename;
+                getImageThread = new Thread(new ThreadStart(LoadImage));
+                getImageThread.Start();
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        //copying the image(Ctrl+C) from the drawingBox to clipboard
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(drawingBox.ClientSize.Width, drawingBox.ClientSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
+            drawingBox.Image = bmp;
+            Clipboard.SetDataObject(bmp);
+            DisplayWarning("Copied to clipboard!");
+
+        }
+
+        //pasting the image(Ctrl+C) from the clipboard to the drawingBox
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.ContainsImage()) //if clipboard contains an image 
+            {
+                drawingBox.Image = Clipboard.GetImage();
+            }
+
+            DisplayWarning("Pasted image from the clipboard!");
+
+        }
+
+        //method for displaying warning messages for 4 seconds
+        private void DisplayWarning(String message, int Interval = 4000)
+        {
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = Interval;
+            warningLbl.Invoke(new Action(() => warningLbl.Text = message));
+            warningLbl.Invoke(new Action(() => warningLbl.Visible = true));
+
+            timer.Elapsed += (s, en) => { //calls Elapsed event for the timer
+                warningLbl.Invoke(new Action(() => warningLbl.Visible = false));
+            };
+            timer.Enabled = true; // Starts the timer. 
+        }
+
     }
 
 
