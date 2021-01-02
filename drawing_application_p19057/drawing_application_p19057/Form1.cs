@@ -30,9 +30,7 @@ namespace drawing_application_p19057
         private List<Point> currentCurve = new List<Point>();
         private List<Point> currentCircle = new List<Point>();
         private List<Point> currentLine = new List<Point>();
-
-        readonly Stack<Bitmap> UndoStack = new Stack<Bitmap>(); //undo Stack
-        readonly Stack<Bitmap> RedoStack = new Stack<Bitmap>(); //redo Stack
+        private List<PenSettings> AllcurvesUndo = new List<PenSettings>();
         private List<PenSettings> AllcurvesRedo = new List<PenSettings>();
         private List<PenSettings> Allcurves = new List<PenSettings>();
         // Tools for drawing
@@ -50,10 +48,10 @@ namespace drawing_application_p19057
         private bool lineActive = false;
         private bool circleActive = false;
         private bool squareActive = false;
-        bool mousedown;
 
         private int mouseX,mouseY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
         private bool undoActive;
+        private bool timelapse;
 
         public Form1()
         {
@@ -138,7 +136,6 @@ namespace drawing_application_p19057
 
             if (lineActive )
             {
-                
                 mouseX1 = e.X;
                 mouseY1 = e.Y; 
                 PenLineSettings penSettings = new PenLineSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
@@ -167,7 +164,6 @@ namespace drawing_application_p19057
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y; 
                 currentCircle.Add(e.Location);
-              //  mouseMoveX.Dispose();
                 drawingBox.Invalidate();
               
             }
@@ -176,8 +172,6 @@ namespace drawing_application_p19057
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
                 drawingBox.Invalidate();
-              //  mouseMoveX = 0;
-              //  mouseMoveY = 0;
             }
             if (e.Button == MouseButtons.Left && penActive)
             {
@@ -189,39 +183,74 @@ namespace drawing_application_p19057
         {
             if (e.Button == MouseButtons.Left)
             {
+                undoActive = false;
                 mouseX = e.X;
                 mouseY = e.Y;
-                UndoStack.Push((Bitmap)bitmapObject.Clone());
-                RedoStack.Clear();
             }
         }
 
         private void drawingBox_Paint(object sender, PaintEventArgs e)
         {
-            foreach(PenSettings penSettigns in Allcurves)
+            if (timelapse == false)
             {
-                if(penSettigns is PenCircleSettings)
+                foreach (PenSettings penSettigns in Allcurves)
                 {
-                    PenCircleSettings penCircleSettings = (PenCircleSettings)penSettigns; //pensettings object is type PenCircleSettings (casting)
-                    e.Graphics.DrawEllipse(penCircleSettings.Pen, penCircleSettings.Shapes.MouseX, penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseY1 - penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseY1 - penCircleSettings.Shapes.MouseY);
-                }else
-                if (penSettigns is PenLineSettings)
-                {
-                    PenLineSettings penCircleSettings = (PenLineSettings)penSettigns;
-                    e.Graphics.DrawLine(penCircleSettings.Pen, penCircleSettings.Shapes.MouseX, penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseX1, penCircleSettings.Shapes.MouseY1);   
-                }
-                else
-                if (penSettigns is PenFreestyleSettings)
-                {
-                    PenFreestyleSettings penFreestyleSettings = (PenFreestyleSettings)penSettigns;
-                    if (penFreestyleSettings.Points.Count > 1) e.Graphics.DrawCurve(penFreestyleSettings.Pen, penFreestyleSettings.Points.ToArray());
-                }
+                    if (penSettigns is PenCircleSettings)
+                    {
+                        PenCircleSettings penCircleSettings = (PenCircleSettings)penSettigns; //pensettings object is type PenCircleSettings (casting)
+                        e.Graphics.DrawEllipse(penCircleSettings.Pen, penCircleSettings.Shapes.MouseX, penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseY1 - penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseY1 - penCircleSettings.Shapes.MouseY);
+                    }
+                    else
+                    if (penSettigns is PenLineSettings)
+                    {
+                        PenLineSettings penCircleSettings = (PenLineSettings)penSettigns;
+                        e.Graphics.DrawLine(penCircleSettings.Pen, penCircleSettings.Shapes.MouseX, penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseX1, penCircleSettings.Shapes.MouseY1);
+                    }
+                    else
+                    if (penSettigns is PenFreestyleSettings)
+                    {
+                        PenFreestyleSettings penFreestyleSettings = (PenFreestyleSettings)penSettigns;
+                        if (penFreestyleSettings.Points.Count > 1) e.Graphics.DrawCurve(penFreestyleSettings.Pen, penFreestyleSettings.Points.ToArray());
+                    }
 
+                }
             }
-
-            if (circleActive && (!undoActive)) e.Graphics.DrawEllipse(pen, mouseX, mouseY, mouseMoveY - mouseY, mouseMoveY - mouseY); //circle preview
-            if (lineActive && (!undoActive)) e.Graphics.DrawLine(pen, mouseX, mouseY, mouseMoveX, mouseMoveY); //line preview
+            if (circleActive && (!undoActive))  e.Graphics.DrawEllipse(pen, mouseX, mouseY, mouseMoveY - mouseY, mouseMoveY - mouseY);  //circle preview
+            if (lineActive && (!undoActive))  e.Graphics.DrawLine(pen, mouseX, mouseY, mouseMoveX, mouseMoveY); //line preview
             if (currentCurve.Count > 1) e.Graphics.DrawCurve(pen, currentCurve.ToArray()); //freestyle "preview"
+
+            //timelapse
+            if (timelapse == true)
+            {
+                foreach (PenSettings penSettigns in Allcurves)
+                {
+                 
+                    if (penSettigns is PenCircleSettings)
+                    {
+                     //   Thread.Sleep(500);
+                        PenCircleSettings penCircleSettings = (PenCircleSettings)penSettigns; //pensettings object is type PenCircleSettings (casting)
+    
+                        e.Graphics.DrawEllipse(penCircleSettings.Pen, penCircleSettings.Shapes.MouseX, penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseY1 - penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseY1 - penCircleSettings.Shapes.MouseY);
+                    }
+                    else
+                    if (penSettigns is PenLineSettings)
+                    {
+                      //  Thread.Sleep(500);
+                        PenLineSettings penCircleSettings = (PenLineSettings)penSettigns;
+              
+                        e.Graphics.DrawLine(penCircleSettings.Pen, penCircleSettings.Shapes.MouseX, penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseX1, penCircleSettings.Shapes.MouseY1);
+                    }
+                    else
+                    if (penSettigns is PenFreestyleSettings)
+                    {
+                     //   Thread.Sleep(500);
+                        PenFreestyleSettings penFreestyleSettings = (PenFreestyleSettings)penSettigns;
+                     
+                        if (penFreestyleSettings.Points.Count > 1) e.Graphics.DrawCurve(penFreestyleSettings.Pen, penFreestyleSettings.Points.ToArray());
+                    }
+                 
+                }
+            }
         }
  
         private void penBtn_Click(object sender, EventArgs e)
@@ -411,9 +440,10 @@ namespace drawing_application_p19057
         {
           if(Allcurves.Count > 0) {
                 undoActive = true;
-                Allcurves.RemoveAt(Allcurves.Count - 1);
-            drawingBox.Invalidate();
                 
+                Allcurves.RemoveAt(Allcurves.Count-1);
+            drawingBox.Invalidate();
+               
             }
         }
         private void redoToolStripMenuItem_Click(object sender, EventArgs e) //pseudoRedo
@@ -432,6 +462,7 @@ namespace drawing_application_p19057
                 drawingBox.Image = null;
             }
             Allcurves.Clear();
+            AllcurvesRedo.Clear();
             circleActive = false;
             lineActive = false;
             penActive = false;
@@ -440,6 +471,18 @@ namespace drawing_application_p19057
             circleBtn.BackColor = Color.WhiteSmoke;
             squareBtn.BackColor = Color.WhiteSmoke;
             lineBtn.BackColor = Color.WhiteSmoke;
+            drawingBox.Invalidate();
+        }
+
+        //tools settings
+        private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            creatingTimelapse();
+        }
+
+        private void creatingTimelapse()
+        {
+            timelapse = true;
             drawingBox.Invalidate();
         }
 
@@ -479,6 +522,8 @@ namespace drawing_application_p19057
                 drawingBox.Image = image;
             }
         }
+
+  
 
         protected void LoadImage()
 
