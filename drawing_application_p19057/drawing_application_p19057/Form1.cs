@@ -28,8 +28,13 @@ namespace drawing_application_p19057
 
         // List of user's points he creates
         private List<Point> currentCurve = new List<Point>();
-        private List<PenSettings> curves = new List<PenSettings>();
-        private List<PenSettings> curvesRedo = new List<PenSettings>();
+        private List<PenSettings> freestyle = new List<PenSettings>();
+        private List<PenSettings> circles = new List<PenSettings>();
+        private List<PenSettings> lines = new List<PenSettings>();
+        private List<PenSettings> circlesRedo = new List<PenSettings>();
+        private List<PenSettings> linesRedo = new List<PenSettings>();
+        private List<PenSettings> freestyleRedo = new List<PenSettings>();
+
         // Tools for drawing
         private Pen pen;
         private Bitmap bmp;
@@ -45,12 +50,14 @@ namespace drawing_application_p19057
         private bool lineActive = false;
         private bool circleActive = false;
         private bool squareActive = false;
-        private int mouseX,mouseY, mouseX1, mouseY1;
-        Shapes shape;
+
+
+        private int mouseX,mouseY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
+       
         public Form1()
         {
             InitializeComponent();
-            pen = new Pen(Color.Black, 2);
+            pen = new Pen(Color.Black, 5);
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new ColorTable());
             warningLbl.Visible = false;
         }
@@ -116,18 +123,14 @@ namespace drawing_application_p19057
         //drawing settings
         private void drawingBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-
-            }
-            if (e.Button == MouseButtons.Left && circleActive)
+       
+            if ( circleActive)
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
-                shape = new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1);
-                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(), shape);
-                 curves.Add(penSettings);
-                curvesRedo.Add(penSettings);
+                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+                 circles.Add(penSettings);
+                circlesRedo.Add(penSettings);
                 drawingBox.Invalidate();
             }
 
@@ -135,20 +138,17 @@ namespace drawing_application_p19057
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
-                shape = new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1);
-                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(), shape);
-                curves.Add(penSettings);
-                curvesRedo.Add(penSettings);
+                
+                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+               lines.Add(penSettings);
+                linesRedo.Add(penSettings);
                 drawingBox.Invalidate();
-
-
             }
             if (currentCurve.Count > 1)
             {
-                shape = new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1); //Zero because only points matter hear
-                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(),shape); 
-                curves.Add(penSettings);
-                curvesRedo.Add(penSettings);
+                PenSettings penSettings = new PenSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1)); 
+                freestyle.Add(penSettings);
+                freestyleRedo.Add(penSettings);
             }
 
             currentCurve.Clear();
@@ -157,7 +157,18 @@ namespace drawing_application_p19057
     
         private void drawingBox_MouseMove(object sender, MouseEventArgs e)
         {
-         
+            if (circleActive && e.Button == MouseButtons.Left)
+            {
+                mouseMoveX = e.X;
+                mouseMoveY = e.Y;
+                drawingBox.Invalidate();
+            }
+            if (lineActive && e.Button == MouseButtons.Left)
+            {
+                mouseMoveX = e.X;
+                mouseMoveY = e.Y;
+                drawingBox.Invalidate();
+            }
             if (e.Button == MouseButtons.Left && penActive)
             {
                 currentCurve.Add(e.Location);
@@ -172,24 +183,24 @@ namespace drawing_application_p19057
 
         private void drawingBox_Paint(object sender, PaintEventArgs e)
         {
-
+            if (circleActive) e.Graphics.DrawEllipse(pen,mouseX,mouseY,mouseMoveY - mouseY, mouseMoveY - mouseY);
+            if (lineActive  ) e.Graphics.DrawLine(pen, mouseX, mouseY, mouseMoveX, mouseMoveY);
             if (currentCurve.Count > 1) e.Graphics.DrawCurve(pen, currentCurve.ToArray());
 
-            foreach (PenSettings penSettings in curves)
+            foreach (PenSettings penSettings in freestyle)
             {
-               if ((penSettings.Points.Count == 0 ) && circleActive )
-              {
-                    e.Graphics.DrawEllipse(penSettings.Pen, penSettings.Shapes.MouseX, penSettings.Shapes.MouseY, penSettings.Shapes.MouseY1 - penSettings.Shapes.MouseY, penSettings.Shapes.MouseY1 - penSettings.Shapes.MouseY);
-
-              }else if ((penSettings.Points.Count == 0) && lineActive )
-               {
-                    e.Graphics.DrawLine(penSettings.Pen, penSettings.Shapes.MouseX, penSettings.Shapes.MouseY, penSettings.Shapes.MouseX1, penSettings.Shapes.MouseY1);
-             }else if(penSettings.Points.Count == 0 && squareActive)
-               {
-                   // e.Graphics.draw
-                }
-              if (penSettings.Points.Count > 1) e.Graphics.DrawCurve(penSettings.Pen, penSettings.Points.ToArray());
+              if (penSettings.Points.Count > 1 ) e.Graphics.DrawCurve(penSettings.Pen, penSettings.Points.ToArray());
             }
+
+            foreach (PenSettings penSettings in lines) 
+            {
+                    e.Graphics.DrawLine(penSettings.Pen, penSettings.Shapes.MouseX, penSettings.Shapes.MouseY, penSettings.Shapes.MouseX1, penSettings.Shapes.MouseY1);   
+            }
+            foreach (PenSettings penSettings in circles)
+            {
+                    e.Graphics.DrawEllipse(penSettings.Pen, penSettings.Shapes.MouseX, penSettings.Shapes.MouseY, penSettings.Shapes.MouseY1 - penSettings.Shapes.MouseY, penSettings.Shapes.MouseY1 - penSettings.Shapes.MouseY);
+            }
+
         }
  
         private void penBtn_Click(object sender, EventArgs e)
@@ -263,7 +274,10 @@ namespace drawing_application_p19057
         {
             pen.Color = Color.Green;
         }
-
+        private void penWidth_Scroll(object sender, EventArgs e)
+        {
+            pen.Width = penWidth.Value;
+        }
 
         //menu options
         private void openToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -372,24 +386,44 @@ namespace drawing_application_p19057
 
 
         //editing settings
-        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e) //pseudoUndo
         {
-           
-
-            if (curves.Count > 0)
+            //circle Undo
+            if (circleActive)
             {
-                
-                curves.RemoveAt(curves.Count - 1);
-                drawingBox.Invalidate();
+                if (circles.Count>0)
+                {
+                    circles.RemoveAt(circles.Count - 1);
+                    drawingBox.Invalidate();
+                }
+            }
+            //lines Undo
+            if (lineActive)
+            {
+                if (lines.Count > 0)
+                {
+                    lines.RemoveAt(lines.Count - 1);
+                    drawingBox.Invalidate();
+                }
+            }
+            //freestyleUndo
+            if (penActive)
+            {
+                if (freestyle.Count > 0)
+                {
+                    freestyle.RemoveAt(freestyle.Count - 1);
+                    drawingBox.Invalidate();
+                }
             }
         }
-        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e) //pseudoRedo
         {
-            if (curves.Count >= 0)
-            {
-                curves.AddRange(curvesRedo);
+        
+                freestyle.AddRange(freestyleRedo);
+                circles.AddRange(circlesRedo);
+                lines.AddRange(linesRedo);
                 drawingBox.Invalidate();
-            }
+           
            
         }
         private void clearningSequence()
@@ -399,7 +433,9 @@ namespace drawing_application_p19057
                 drawingBox.Image.Dispose();
                 drawingBox.Image = null;
             }
-            curves.Clear();
+            freestyle.Clear();
+            lines.Clear();
+            circles.Clear();
             drawingBox.Invalidate();
         }
 
@@ -461,6 +497,8 @@ namespace drawing_application_p19057
                 e.Effect = DragDropEffects.None;
         }
 
+       
+
         //copying the image(Ctrl+C) from the drawingBox to clipboard
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -510,7 +548,7 @@ namespace drawing_application_p19057
 
        public Shapes(Pen pen, int mouseX, int mouseY, int mouseX1, int mouseY1)
         {
-            Pen = new Pen(pen.Color, pen.Width);
+             Pen = new Pen(pen.Color, pen.Width);
              MouseX =  mouseX;
              MouseY = mouseY;
              MouseX1 = mouseX1;

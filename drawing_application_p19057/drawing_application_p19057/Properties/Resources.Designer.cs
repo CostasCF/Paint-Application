@@ -133,6 +133,26 @@ namespace drawing_application_p19057.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap menu_vertical_30px {
+            get {
+                object obj = ResourceManager.GetObject("menu_vertical_30px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap menu_vertical_48px {
+            get {
+                object obj = ResourceManager.GetObject("menu_vertical_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap minimize_window_32px {
             get {
                 object obj = ResourceManager.GetObject("minimize_window_32px", resourceCulture);

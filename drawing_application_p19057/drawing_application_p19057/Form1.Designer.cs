@@ -66,6 +66,7 @@ namespace drawing_application_p19057
             this.maximizeBtn = new System.Windows.Forms.Button();
             this.minimizeBtn = new System.Windows.Forms.Button();
             this.menuPanel = new System.Windows.Forms.Panel();
+            this.penWidth = new System.Windows.Forms.TrackBar();
             this.moreColors = new System.Windows.Forms.PictureBox();
             this.greenBox = new System.Windows.Forms.PictureBox();
             this.yellowBox = new System.Windows.Forms.PictureBox();
@@ -77,15 +78,16 @@ namespace drawing_application_p19057
             this.penBtn = new System.Windows.Forms.Button();
             this.stripPanel = new System.Windows.Forms.Panel();
             this.stripPanel2 = new System.Windows.Forms.Panel();
-            this.drawingBox = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.moreColorsTp = new System.Windows.Forms.ToolTip(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.drawingBox = new System.Windows.Forms.PictureBox();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.menuPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.penWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.moreColors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.greenBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yellowBox)).BeginInit();
@@ -432,6 +434,7 @@ namespace drawing_application_p19057
             // menuPanel
             // 
             this.menuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.menuPanel.Controls.Add(this.penWidth);
             this.menuPanel.Controls.Add(this.moreColors);
             this.menuPanel.Controls.Add(this.greenBox);
             this.menuPanel.Controls.Add(this.yellowBox);
@@ -447,15 +450,25 @@ namespace drawing_application_p19057
             this.menuPanel.Size = new System.Drawing.Size(48, 573);
             this.menuPanel.TabIndex = 2;
             // 
+            // penWidth
+            // 
+            this.penWidth.Location = new System.Drawing.Point(3, 93);
+            this.penWidth.Maximum = 15;
+            this.penWidth.Name = "penWidth";
+            this.penWidth.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.penWidth.Size = new System.Drawing.Size(45, 104);
+            this.penWidth.TabIndex = 10;
+            this.penWidth.Scroll += new System.EventHandler(this.penWidth_Scroll);
+            // 
             // moreColors
             // 
             this.moreColors.BackColor = System.Drawing.Color.Transparent;
-            this.moreColors.BackgroundImage = global::drawing_application_p19057.Properties.Resources.more_50px;
-            this.moreColors.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.moreColors.BackgroundImage = global::drawing_application_p19057.Properties.Resources.menu_vertical_48px;
+            this.moreColors.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.moreColors.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.moreColors.Location = new System.Drawing.Point(3, 522);
+            this.moreColors.Location = new System.Drawing.Point(9, 530);
             this.moreColors.Name = "moreColors";
-            this.moreColors.Size = new System.Drawing.Size(33, 26);
+            this.moreColors.Size = new System.Drawing.Size(33, 40);
             this.moreColors.TabIndex = 9;
             this.moreColors.TabStop = false;
             this.moreColors.Click += new System.EventHandler(this.moreColors_Click);
@@ -467,7 +480,7 @@ namespace drawing_application_p19057
             // 
             this.greenBox.BackColor = System.Drawing.Color.Green;
             this.greenBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.greenBox.Location = new System.Drawing.Point(3, 486);
+            this.greenBox.Location = new System.Drawing.Point(9, 494);
             this.greenBox.Name = "greenBox";
             this.greenBox.Size = new System.Drawing.Size(33, 30);
             this.greenBox.TabIndex = 8;
@@ -478,7 +491,7 @@ namespace drawing_application_p19057
             // 
             this.yellowBox.BackColor = System.Drawing.Color.Yellow;
             this.yellowBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.yellowBox.Location = new System.Drawing.Point(3, 450);
+            this.yellowBox.Location = new System.Drawing.Point(9, 458);
             this.yellowBox.Name = "yellowBox";
             this.yellowBox.Size = new System.Drawing.Size(33, 30);
             this.yellowBox.TabIndex = 7;
@@ -489,7 +502,7 @@ namespace drawing_application_p19057
             // 
             this.blueBox.BackColor = System.Drawing.Color.Blue;
             this.blueBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.blueBox.Location = new System.Drawing.Point(3, 415);
+            this.blueBox.Location = new System.Drawing.Point(9, 423);
             this.blueBox.Name = "blueBox";
             this.blueBox.Size = new System.Drawing.Size(33, 30);
             this.blueBox.TabIndex = 6;
@@ -500,7 +513,7 @@ namespace drawing_application_p19057
             // 
             this.redBox.BackColor = System.Drawing.Color.Red;
             this.redBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.redBox.Location = new System.Drawing.Point(3, 379);
+            this.redBox.Location = new System.Drawing.Point(9, 387);
             this.redBox.Name = "redBox";
             this.redBox.Size = new System.Drawing.Size(33, 30);
             this.redBox.TabIndex = 5;
@@ -518,7 +531,7 @@ namespace drawing_application_p19057
             this.circleBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.circleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.circleBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.circleBtn.Location = new System.Drawing.Point(0, 258);
+            this.circleBtn.Location = new System.Drawing.Point(3, 300);
             this.circleBtn.Name = "circleBtn";
             this.circleBtn.Size = new System.Drawing.Size(42, 33);
             this.circleBtn.TabIndex = 3;
@@ -536,7 +549,7 @@ namespace drawing_application_p19057
             this.squareBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.squareBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.squareBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.squareBtn.Location = new System.Drawing.Point(0, 297);
+            this.squareBtn.Location = new System.Drawing.Point(3, 339);
             this.squareBtn.Name = "squareBtn";
             this.squareBtn.Size = new System.Drawing.Size(42, 33);
             this.squareBtn.TabIndex = 4;
@@ -554,7 +567,7 @@ namespace drawing_application_p19057
             this.lineBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.lineBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lineBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.lineBtn.Location = new System.Drawing.Point(0, 219);
+            this.lineBtn.Location = new System.Drawing.Point(3, 261);
             this.lineBtn.Name = "lineBtn";
             this.lineBtn.Size = new System.Drawing.Size(42, 33);
             this.lineBtn.TabIndex = 2;
@@ -572,7 +585,7 @@ namespace drawing_application_p19057
             this.penBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.penBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.penBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.penBtn.Location = new System.Drawing.Point(3, 36);
+            this.penBtn.Location = new System.Drawing.Point(3, 54);
             this.penBtn.Name = "penBtn";
             this.penBtn.Size = new System.Drawing.Size(42, 33);
             this.penBtn.TabIndex = 1;
@@ -597,6 +610,10 @@ namespace drawing_application_p19057
             this.stripPanel2.Size = new System.Drawing.Size(3, 570);
             this.stripPanel2.TabIndex = 4;
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // drawingBox
             // 
             this.drawingBox.BackColor = System.Drawing.Color.White;
@@ -611,10 +628,6 @@ namespace drawing_application_p19057
             this.drawingBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseDown);
             this.drawingBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseMove);
             this.drawingBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseUp);
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 
@@ -642,6 +655,8 @@ namespace drawing_application_p19057
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.menuPanel.ResumeLayout(false);
+            this.menuPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.penWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.moreColors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.greenBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yellowBox)).EndInit();
@@ -705,6 +720,7 @@ namespace drawing_application_p19057
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label warningLbl;
+        private System.Windows.Forms.TrackBar penWidth;
     }
 }
 
