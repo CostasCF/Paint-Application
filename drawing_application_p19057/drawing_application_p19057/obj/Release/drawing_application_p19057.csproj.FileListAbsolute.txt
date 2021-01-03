@@ -1,0 +1,11 @@
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Release\drawing_application_p19057.exe.config
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Release\drawing_application_p19057.exe
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Release\drawing_application_p19057.pdb
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Release\drawing_application_p19057.csprojAssemblyReference.cache
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Release\drawing_application_p19057.AboutControl.resources
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Release\drawing_application_p19057.Form1.resources
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Release\drawing_application_p19057.Properties.Resources.resources
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Release\drawing_application_p19057.csproj.GenerateResource.cache
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Release\drawing_application_p19057.csproj.CoreCompileInputs.cache
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Release\drawing_application_p19057.exe
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Release\drawing_application_p19057.pdb

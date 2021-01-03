@@ -40,32 +40,36 @@ namespace drawing_application_p19057
         private Bitmap bmp;
         PrintDialog pd;
         PrintDocument doc;
+        Color colorSelected = Color.Black;
         // Tools for drag and drop images inside the drawingBox
         protected bool validData;
         string path;
         protected Image image;
         protected Thread getImageThread;
         //bool variables for selecting pen,circle,rectangle,line, ellipse etc
-        private bool penActive = false;
+        private bool penActive;
         private bool lineActive = false;
         private bool circleActive = false;
         private bool squareActive = false;
         private bool ellipseActive = false;
+        private bool eraserActive = false;
         private int mouseX,mouseY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
         private bool undoActive;
         private bool timelapse;
+        private bool mouseActive = false;
 
         public Form1()
         {
             InitializeComponent();
-            pen = new Pen(Color.Black, 3);
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new ColorTable());
             warningLbl.Visible = false;
-            penWidth.Value = 3;
+            penWidth.Value = 1;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             this.FormBorderStyle = FormBorderStyle.None;
-
-
+            aboutControl.Hide();
+            penActive = true;
+            pen = new Pen(colorSelected, penWidth.Value);
+            penBtn.BackColor = Color.Silver;
         }
 
 
@@ -78,7 +82,7 @@ namespace drawing_application_p19057
         private void maximizeBtn_Click(object sender, EventArgs e)
         {
            
-            if (this.WindowState == FormWindowState.Maximized) { this.WindowState = FormWindowState.Normal; } else { this.WindowState = FormWindowState.Maximized; }
+            if (this.WindowState == FormWindowState.Maximized) { maximizeBtn.BackgroundImage = Properties.Resources.maximize_button_24px; this.WindowState = FormWindowState.Normal; } else { maximizeBtn.BackgroundImage = Properties.Resources.restore_down; this.WindowState = FormWindowState.Maximized; }
         }
 
         private void exitBtn_Click(object sender, EventArgs e)
@@ -98,7 +102,7 @@ namespace drawing_application_p19057
 
         private void topPanel_DoubleClick(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Maximized) { this.WindowState = FormWindowState.Normal; } else { this.WindowState = FormWindowState.Maximized; }
+            if (this.WindowState == FormWindowState.Maximized) { maximizeBtn.BackgroundImage = Properties.Resources.maximize_button_24px; this.WindowState = FormWindowState.Normal; } else { maximizeBtn.BackgroundImage = Properties.Resources.restore_down; this.WindowState = FormWindowState.Maximized; }
         }
 
         private void fileToolStripMenuItem1_MouseHover(object sender, EventArgs e)
@@ -125,11 +129,44 @@ namespace drawing_application_p19057
         {
             moreColorsTp.SetToolTip(moreColors, "More Colors");
         }
+        private void penBtn_MouseHover(object sender, EventArgs e)
+        {
+            penTip.SetToolTip(penBtn, "Pen");
+        }
+        private void eraserBtn_MouseHover(object sender, EventArgs e)
+        {
+            eraserTip.SetToolTip(eraserBtn, "Eraser");
+        }
+
+        private void lineBtn_MouseHover(object sender, EventArgs e)
+        {
+            lineTip.SetToolTip(lineBtn,"Line");
+        }
+
+        private void ellipseBtn_MouseHover(object sender, EventArgs e)
+        {
+            ellipseTip.SetToolTip(ellipseBtn, "Ellipse");
+        }
+
+        private void circleBtn_MouseHover(object sender, EventArgs e)
+        {
+            circleTip.SetToolTip(circleBtn, "Circle");
+        }
+
+        private void squareBtn_MouseHover(object sender, EventArgs e)
+        {
+            squareTip.SetToolTip(squareBtn, "Square");
+        }
+
+        private void penWidth_MouseHover(object sender, EventArgs e)
+        {
+            penSizeTip.SetToolTip(penWidth, "Select a pen size");
+        }
 
         //drawing settings
         private void drawingBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (ellipseActive)
+            if (ellipseActive && mouseActive  )
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
@@ -137,9 +174,10 @@ namespace drawing_application_p19057
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
+                mouseActive = false;
             }
 
-            if (circleActive )
+            if (circleActive && mouseActive)
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
@@ -147,19 +185,23 @@ namespace drawing_application_p19057
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
+                mouseActive = false;
             }
-            if (squareActive && e.Button == MouseButtons.Left)
+            if (squareActive && mouseActive)
             {
-                mouseX1 = Abs(e.X - mouseX);
-                mouseY1 = Abs(e.Y - mouseY);
+                mouseX1 = e.X - mouseX;
+                mouseY1 = e.Y - mouseY;
+
+
                 PenSquareSettings penSettings = new PenSquareSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
 
                 drawingBox.Invalidate();
+                mouseActive = false;
 
             }
-            if (lineActive )
+            if (lineActive && mouseActive)
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y; 
@@ -167,7 +209,7 @@ namespace drawing_application_p19057
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
-
+                mouseActive = false;
             }
             if (currentCurve.Count > 1)
             {
@@ -182,26 +224,38 @@ namespace drawing_application_p19057
     
         private void drawingBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if(squareActive && e.Button == MouseButtons.Left) {
-               mouseMoveX = Abs(e.X - mouseX);
-               mouseMoveY = Abs(e.Y - mouseY);
+            positionX.Text = e.X.ToString();
+            positionY.Text = e.Y.ToString();
+                
+            if (squareActive && e.Button == MouseButtons.Left) {
+                mouseActive = true;
+
+
+                mouseMoveX = e.X - mouseX;
+                mouseMoveY = e.Y - mouseY;
                 drawingBox.Invalidate();
+               // if (mouseMoveX > 0 && mouseMoveY > 0 ) { drawingBox.Invalidate(); } else if (mouseMoveX < 0 && mouseMoveY > 0) { Abs(mouseMoveX); drawingBox.Invalidate(); }
+
+
+
             }
             if(ellipseActive && e.Button == MouseButtons.Left) { //ellipse preview
+                mouseActive = true;
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
                 drawingBox.Invalidate();
             }
-            if (circleActive && e.Button == MouseButtons.Left ) //circle preview
+            if (circleActive && e.Button == MouseButtons.Left) //circle preview
             {
-                
+                mouseActive = true;
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y; 
                 drawingBox.Invalidate();
               
             }
-            if (lineActive && e.Button == MouseButtons.Left ) //line preview
+            if (lineActive && e.Button == MouseButtons.Left) //line preview
             {
+                mouseActive = true;
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
                 drawingBox.Invalidate();
@@ -299,10 +353,26 @@ namespace drawing_application_p19057
                 }
             }
         }
- 
+        private void eraserBtn_Click(object sender, EventArgs e)
+        {
+            pen = new Pen(Color.White, penWidth.Value);
+            eraserActive = true;
+            eraserBtn.BackColor = Color.Silver;
+            lineActive = false;
+            squareActive = false;
+            circleActive = false;
+            ellipseActive = false;
+            penActive = true;
+            penBtn.BackColor = Color.WhiteSmoke;
+            lineBtn.BackColor = Color.WhiteSmoke;
+            circleBtn.BackColor = Color.WhiteSmoke;
+            squareBtn.BackColor = Color.WhiteSmoke;
+            ellipseBtn.BackColor = Color.WhiteSmoke;
+        }
         private void penBtn_Click(object sender, EventArgs e)
         {
             penActive = true;
+            pen = new Pen(colorSelected, penWidth.Value);
             penBtn.BackColor = Color.Silver;
             lineActive = false;
             squareActive = false;
@@ -312,23 +382,29 @@ namespace drawing_application_p19057
             squareBtn.BackColor = Color.WhiteSmoke;
             ellipseBtn.BackColor = Color.WhiteSmoke;
             ellipseActive = false;
+            eraserBtn.BackColor = Color.WhiteSmoke;
+            eraserActive = false;
         }
         private void lineBtn_Click(object sender, EventArgs e)
         {
-            lineActive = true;
-            lineBtn.BackColor = Color.Silver;
-            penActive = false;
-            squareActive = false;
-            circleActive = false;
-            penBtn.BackColor = Color.WhiteSmoke;
-            circleBtn.BackColor = Color.WhiteSmoke;
-            squareBtn.BackColor = Color.WhiteSmoke;
-            ellipseBtn.BackColor = Color.WhiteSmoke;
-            ellipseActive = false;
+                pen = new Pen(colorSelected, penWidth.Value);
+                lineActive = true;
+                lineBtn.BackColor = Color.Silver;
+                penActive = false;
+                squareActive = false;
+                circleActive = false;
+                penBtn.BackColor = Color.WhiteSmoke;
+                circleBtn.BackColor = Color.WhiteSmoke;
+                squareBtn.BackColor = Color.WhiteSmoke;
+                ellipseBtn.BackColor = Color.WhiteSmoke;
+                ellipseActive = false;
+                eraserBtn.BackColor = Color.WhiteSmoke;
+                eraserActive = false;
         }
 
         private void circleBtn_Click(object sender, EventArgs e)
         {
+            pen = new Pen(colorSelected, penWidth.Value);
             circleActive = true;
             circleBtn.BackColor = Color.Silver;
             lineActive = false;
@@ -339,10 +415,13 @@ namespace drawing_application_p19057
             lineBtn.BackColor = Color.WhiteSmoke;
             ellipseBtn.BackColor = Color.WhiteSmoke;
             ellipseActive = false;
+            eraserBtn.BackColor = Color.WhiteSmoke;
+            eraserActive = false;
         }
 
         private void sqaureBtn_Click(object sender, EventArgs e)
         {
+            pen = new Pen(colorSelected, penWidth.Value);
             squareActive = true;
             squareBtn.BackColor = Color.Silver;
             circleActive = false;
@@ -353,6 +432,8 @@ namespace drawing_application_p19057
             lineBtn.BackColor = Color.WhiteSmoke;
             ellipseBtn.BackColor = Color.WhiteSmoke;
             ellipseActive = false;
+            eraserBtn.BackColor = Color.WhiteSmoke;
+            eraserActive = false;
         }
         private void ellipseBtn_Click(object sender, EventArgs e)
         {
@@ -367,35 +448,70 @@ namespace drawing_application_p19057
             circleBtn.BackColor = Color.WhiteSmoke;
             lineBtn.BackColor = Color.WhiteSmoke;
             squareBtn.BackColor = Color.WhiteSmoke;
+            eraserBtn.BackColor = Color.WhiteSmoke;
+            eraserActive = false;
         }
         //colors selection
         private void moreColors_Click(object sender, EventArgs e)
         {
-            if (colorDialog1.ShowDialog() == DialogResult.OK) { pen.Color = colorDialog1.Color; }
+            if (colorDialog1.ShowDialog() == DialogResult.OK) { if (eraserActive == false ) colorSelected = colorDialog1.Color; pen = new Pen(colorSelected, penWidth.Value);
+            }
         }
 
         private void redBox_Click(object sender, EventArgs e)
         {
-            pen.Color = Color.Red;
+            if (eraserActive == false )
+            {
+                colorSelected = Color.Red;
+                pen = new Pen(colorSelected, penWidth.Value);
+            }
+
         }
 
         private void blueBox_Click(object sender, EventArgs e)
         {
-            pen.Color = Color.Blue;
+            if (eraserActive == false)
+            {
+                colorSelected = Color.Blue;
+                pen = new Pen(colorSelected, penWidth.Value);
+
+            }
+
         }
 
         private void yellowBox_Click(object sender, EventArgs e)
         {
-            pen.Color = Color.Yellow;
+            if (eraserActive == false )
+            {
+                colorSelected = Color.Yellow;
+                pen = new Pen(colorSelected, penWidth.Value);
+
+            }
         }
 
         private void greenBox_Click(object sender, EventArgs e)
         {
-            pen.Color = Color.Green;
+            if (eraserActive == false)
+            {
+                colorSelected = Color.Green;
+                pen = new Pen(colorSelected, penWidth.Value);
+
+            }
         }
         private void penWidth_Scroll(object sender, EventArgs e)
         {
-            pen.Width = penWidth.Value;
+
+            if (eraserActive == false)
+            {
+                pen.Width = penWidth.Value;
+                pen = new Pen(colorSelected, penWidth.Value);
+            }
+            else
+            {
+                pen.Width = penWidth.Value;
+                pen = new Pen(Color.White, penWidth.Value);
+            }
+
         }
 
         //menu options
@@ -530,13 +646,16 @@ namespace drawing_application_p19057
                 drawingBox.Image.Dispose();
                 drawingBox.Image = null;
             }
+            colorSelected = Color.Black;
             Allcurves.Clear();
             AllcurvesRedo.Clear();
             circleActive = false;
             lineActive = false;
-            penActive = false;
+            penBtn.BackColor = Color.Silver;
+            penActive = true;
             squareActive = false;
-            penBtn.BackColor = Color.WhiteSmoke;
+            eraserActive = false;
+            eraserBtn.BackColor = Color.WhiteSmoke;
             circleBtn.BackColor = Color.WhiteSmoke;
             squareBtn.BackColor = Color.WhiteSmoke;
             lineBtn.BackColor = Color.WhiteSmoke;
@@ -546,7 +665,9 @@ namespace drawing_application_p19057
         //tools settings
         private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            creatingTimelapse();
+            MessageBox.Show("Coming Soon!");
+
+
         }
 
         private void creatingTimelapse()
@@ -615,7 +736,20 @@ namespace drawing_application_p19057
                 e.Effect = DragDropEffects.None;
         }
 
-  
+
+        //about control appears
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            aboutControl.Show();
+        }
+
+      
+
+
+
+
+
+
 
 
 

@@ -93,6 +93,16 @@ namespace drawing_application_p19057.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_eraser_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_eraser_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_paint_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8_paint_64", resourceCulture);
@@ -196,6 +206,16 @@ namespace drawing_application_p19057.Properties {
         internal static System.Drawing.Bitmap more_50px {
             get {
                 object obj = ResourceManager.GetObject("more_50px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap restore_down {
+            get {
+                object obj = ResourceManager.GetObject("restore_down", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

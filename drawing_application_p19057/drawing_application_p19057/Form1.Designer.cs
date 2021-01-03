@@ -53,18 +53,20 @@ namespace drawing_application_p19057
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.indexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitBtn = new System.Windows.Forms.Button();
             this.maximizeBtn = new System.Windows.Forms.Button();
             this.minimizeBtn = new System.Windows.Forms.Button();
             this.menuPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.positionY = new System.Windows.Forms.Label();
+            this.positionX = new System.Windows.Forms.Label();
+            this.eraserBtn = new System.Windows.Forms.Button();
             this.ellipseBtn = new System.Windows.Forms.Button();
             this.penWidth = new System.Windows.Forms.TrackBar();
             this.moreColors = new System.Windows.Forms.PictureBox();
@@ -83,6 +85,14 @@ namespace drawing_application_p19057
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.drawingBox = new System.Windows.Forms.PictureBox();
+            this.aboutControl = new drawing_application_p19057.AboutControl();
+            this.penTip = new System.Windows.Forms.ToolTip(this.components);
+            this.eraserTip = new System.Windows.Forms.ToolTip(this.components);
+            this.lineTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ellipseTip = new System.Windows.Forms.ToolTip(this.components);
+            this.circleTip = new System.Windows.Forms.ToolTip(this.components);
+            this.squareTip = new System.Windows.Forms.ToolTip(this.components);
+            this.penSizeTip = new System.Windows.Forms.ToolTip(this.components);
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -304,19 +314,12 @@ namespace drawing_application_p19057
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.customizeToolStripMenuItem,
             this.optionsToolStripMenuItem1});
             this.toolsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(51, 21);
             this.toolsToolStripMenuItem.Text = "&Tools";
-            // 
-            // customizeToolStripMenuItem
-            // 
-            this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.customizeToolStripMenuItem.Text = "&Customize";
             // 
             // optionsToolStripMenuItem1
             // 
@@ -329,8 +332,6 @@ namespace drawing_application_p19057
             // 
             this.helpToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.contentsToolStripMenuItem,
-            this.indexToolStripMenuItem,
-            this.searchToolStripMenuItem,
             this.toolStripSeparator5,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -342,31 +343,20 @@ namespace drawing_application_p19057
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.contentsToolStripMenuItem.Text = "&Contents";
-            // 
-            // indexToolStripMenuItem
-            // 
-            this.indexToolStripMenuItem.Name = "indexToolStripMenuItem";
-            this.indexToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.indexToolStripMenuItem.Text = "&Index";
-            // 
-            // searchToolStripMenuItem
-            // 
-            this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.searchToolStripMenuItem.Text = "&Search";
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.contentsToolStripMenuItem.Text = "Version 1.0";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(124, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(137, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.aboutToolStripMenuItem.Text = "&About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitBtn
             // 
@@ -428,6 +418,11 @@ namespace drawing_application_p19057
             // menuPanel
             // 
             this.menuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.menuPanel.Controls.Add(this.label1);
+            this.menuPanel.Controls.Add(this.label2);
+            this.menuPanel.Controls.Add(this.positionY);
+            this.menuPanel.Controls.Add(this.positionX);
+            this.menuPanel.Controls.Add(this.eraserBtn);
             this.menuPanel.Controls.Add(this.ellipseBtn);
             this.menuPanel.Controls.Add(this.penWidth);
             this.menuPanel.Controls.Add(this.moreColors);
@@ -442,12 +437,82 @@ namespace drawing_application_p19057
             this.menuPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.menuPanel.Location = new System.Drawing.Point(5, 32);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(48, 746);
+            this.menuPanel.Size = new System.Drawing.Size(51, 746);
             this.menuPanel.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Century", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(-3, 709);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(21, 16);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Y:";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Century", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(-3, 677);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(21, 16);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "X:";
+            // 
+            // positionY
+            // 
+            this.positionY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.positionY.AutoSize = true;
+            this.positionY.BackColor = System.Drawing.Color.Transparent;
+            this.positionY.Font = new System.Drawing.Font("Century", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.positionY.ForeColor = System.Drawing.Color.White;
+            this.positionY.Location = new System.Drawing.Point(15, 709);
+            this.positionY.Name = "positionY";
+            this.positionY.Size = new System.Drawing.Size(36, 16);
+            this.positionY.TabIndex = 14;
+            this.positionY.Text = "posY";
+            // 
+            // positionX
+            // 
+            this.positionX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.positionX.AutoSize = true;
+            this.positionX.BackColor = System.Drawing.Color.Transparent;
+            this.positionX.Font = new System.Drawing.Font("Century", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.positionX.ForeColor = System.Drawing.Color.White;
+            this.positionX.Location = new System.Drawing.Point(15, 677);
+            this.positionX.Name = "positionX";
+            this.positionX.Size = new System.Drawing.Size(36, 16);
+            this.positionX.TabIndex = 13;
+            this.positionX.Text = "posX";
+            // 
+            // eraserBtn
+            // 
+            this.eraserBtn.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.eraserBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.icons8_eraser_64;
+            this.eraserBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.eraserBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.eraserBtn.FlatAppearance.BorderSize = 0;
+            this.eraserBtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Silver;
+            this.eraserBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.eraserBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.eraserBtn.ForeColor = System.Drawing.SystemColors.Control;
+            this.eraserBtn.Location = new System.Drawing.Point(3, 45);
+            this.eraserBtn.Name = "eraserBtn";
+            this.eraserBtn.Size = new System.Drawing.Size(42, 33);
+            this.eraserBtn.TabIndex = 12;
+            this.eraserBtn.UseVisualStyleBackColor = false;
+            this.eraserBtn.Click += new System.EventHandler(this.eraserBtn_Click);
+            this.eraserBtn.MouseHover += new System.EventHandler(this.eraserBtn_MouseHover);
             // 
             // ellipseBtn
             // 
-            this.ellipseBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ellipseBtn.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ellipseBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.ellipse_24px;
             this.ellipseBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -457,31 +522,34 @@ namespace drawing_application_p19057
             this.ellipseBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.ellipseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ellipseBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.ellipseBtn.Location = new System.Drawing.Point(3, 351);
+            this.ellipseBtn.Location = new System.Drawing.Point(3, 129);
             this.ellipseBtn.Name = "ellipseBtn";
             this.ellipseBtn.Size = new System.Drawing.Size(42, 33);
             this.ellipseBtn.TabIndex = 11;
             this.ellipseBtn.UseVisualStyleBackColor = false;
             this.ellipseBtn.Click += new System.EventHandler(this.ellipseBtn_Click);
+            this.ellipseBtn.MouseHover += new System.EventHandler(this.ellipseBtn_MouseHover);
             // 
             // penWidth
             // 
-            this.penWidth.Location = new System.Drawing.Point(3, 93);
-            this.penWidth.Maximum = 15;
+            this.penWidth.Location = new System.Drawing.Point(9, 246);
+            this.penWidth.Maximum = 30;
+            this.penWidth.Minimum = 1;
             this.penWidth.Name = "penWidth";
             this.penWidth.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.penWidth.Size = new System.Drawing.Size(45, 104);
+            this.penWidth.Size = new System.Drawing.Size(45, 185);
             this.penWidth.TabIndex = 10;
+            this.penWidth.Value = 1;
             this.penWidth.Scroll += new System.EventHandler(this.penWidth_Scroll);
+            this.penWidth.MouseHover += new System.EventHandler(this.penWidth_MouseHover);
             // 
             // moreColors
             // 
-            this.moreColors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.moreColors.BackColor = System.Drawing.Color.Transparent;
             this.moreColors.BackgroundImage = global::drawing_application_p19057.Properties.Resources.menu_vertical_48px;
             this.moreColors.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.moreColors.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.moreColors.Location = new System.Drawing.Point(3, 642);
+            this.moreColors.Location = new System.Drawing.Point(9, 576);
             this.moreColors.Name = "moreColors";
             this.moreColors.Size = new System.Drawing.Size(33, 40);
             this.moreColors.TabIndex = 9;
@@ -493,10 +561,9 @@ namespace drawing_application_p19057
             // 
             // greenBox
             // 
-            this.greenBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.greenBox.BackColor = System.Drawing.Color.Green;
             this.greenBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.greenBox.Location = new System.Drawing.Point(3, 606);
+            this.greenBox.Location = new System.Drawing.Point(9, 544);
             this.greenBox.Name = "greenBox";
             this.greenBox.Size = new System.Drawing.Size(33, 30);
             this.greenBox.TabIndex = 8;
@@ -505,10 +572,9 @@ namespace drawing_application_p19057
             // 
             // yellowBox
             // 
-            this.yellowBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.yellowBox.BackColor = System.Drawing.Color.Yellow;
             this.yellowBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.yellowBox.Location = new System.Drawing.Point(3, 570);
+            this.yellowBox.Location = new System.Drawing.Point(9, 508);
             this.yellowBox.Name = "yellowBox";
             this.yellowBox.Size = new System.Drawing.Size(33, 30);
             this.yellowBox.TabIndex = 7;
@@ -517,10 +583,9 @@ namespace drawing_application_p19057
             // 
             // blueBox
             // 
-            this.blueBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.blueBox.BackColor = System.Drawing.Color.Blue;
             this.blueBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.blueBox.Location = new System.Drawing.Point(3, 535);
+            this.blueBox.Location = new System.Drawing.Point(9, 473);
             this.blueBox.Name = "blueBox";
             this.blueBox.Size = new System.Drawing.Size(33, 30);
             this.blueBox.TabIndex = 6;
@@ -529,10 +594,9 @@ namespace drawing_application_p19057
             // 
             // redBox
             // 
-            this.redBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.redBox.BackColor = System.Drawing.Color.Red;
             this.redBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.redBox.Location = new System.Drawing.Point(3, 499);
+            this.redBox.Location = new System.Drawing.Point(9, 437);
             this.redBox.Name = "redBox";
             this.redBox.Size = new System.Drawing.Size(33, 30);
             this.redBox.TabIndex = 5;
@@ -541,7 +605,6 @@ namespace drawing_application_p19057
             // 
             // circleBtn
             // 
-            this.circleBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.circleBtn.BackColor = System.Drawing.Color.WhiteSmoke;
             this.circleBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.circle_50px;
             this.circleBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -551,16 +614,16 @@ namespace drawing_application_p19057
             this.circleBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.circleBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.circleBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.circleBtn.Location = new System.Drawing.Point(3, 390);
+            this.circleBtn.Location = new System.Drawing.Point(3, 168);
             this.circleBtn.Name = "circleBtn";
             this.circleBtn.Size = new System.Drawing.Size(42, 33);
             this.circleBtn.TabIndex = 3;
             this.circleBtn.UseVisualStyleBackColor = false;
             this.circleBtn.Click += new System.EventHandler(this.circleBtn_Click);
+            this.circleBtn.MouseHover += new System.EventHandler(this.circleBtn_MouseHover);
             // 
             // squareBtn
             // 
-            this.squareBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.squareBtn.BackColor = System.Drawing.Color.WhiteSmoke;
             this.squareBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.square_24px;
             this.squareBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -570,16 +633,16 @@ namespace drawing_application_p19057
             this.squareBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.squareBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.squareBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.squareBtn.Location = new System.Drawing.Point(3, 429);
+            this.squareBtn.Location = new System.Drawing.Point(3, 207);
             this.squareBtn.Name = "squareBtn";
             this.squareBtn.Size = new System.Drawing.Size(42, 33);
             this.squareBtn.TabIndex = 4;
             this.squareBtn.UseVisualStyleBackColor = false;
             this.squareBtn.Click += new System.EventHandler(this.sqaureBtn_Click);
+            this.squareBtn.MouseHover += new System.EventHandler(this.squareBtn_MouseHover);
             // 
             // lineBtn
             // 
-            this.lineBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lineBtn.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lineBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.line_32px;
             this.lineBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -589,12 +652,13 @@ namespace drawing_application_p19057
             this.lineBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.lineBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lineBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.lineBtn.Location = new System.Drawing.Point(3, 312);
+            this.lineBtn.Location = new System.Drawing.Point(3, 90);
             this.lineBtn.Name = "lineBtn";
             this.lineBtn.Size = new System.Drawing.Size(42, 33);
             this.lineBtn.TabIndex = 2;
             this.lineBtn.UseVisualStyleBackColor = false;
             this.lineBtn.Click += new System.EventHandler(this.lineBtn_Click);
+            this.lineBtn.MouseHover += new System.EventHandler(this.lineBtn_MouseHover);
             // 
             // penBtn
             // 
@@ -607,27 +671,28 @@ namespace drawing_application_p19057
             this.penBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.penBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.penBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.penBtn.Location = new System.Drawing.Point(3, 54);
+            this.penBtn.Location = new System.Drawing.Point(3, 6);
             this.penBtn.Name = "penBtn";
             this.penBtn.Size = new System.Drawing.Size(42, 33);
             this.penBtn.TabIndex = 1;
             this.penBtn.UseVisualStyleBackColor = false;
             this.penBtn.Click += new System.EventHandler(this.penBtn_Click);
+            this.penBtn.MouseHover += new System.EventHandler(this.penBtn_MouseHover);
             // 
             // stripPanel
             // 
             this.stripPanel.BackColor = System.Drawing.SystemColors.ControlText;
             this.stripPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.stripPanel.Location = new System.Drawing.Point(53, 32);
+            this.stripPanel.Location = new System.Drawing.Point(56, 32);
             this.stripPanel.Name = "stripPanel";
-            this.stripPanel.Size = new System.Drawing.Size(945, 3);
+            this.stripPanel.Size = new System.Drawing.Size(942, 3);
             this.stripPanel.TabIndex = 3;
             // 
             // stripPanel2
             // 
             this.stripPanel2.BackColor = System.Drawing.SystemColors.ControlText;
             this.stripPanel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.stripPanel2.Location = new System.Drawing.Point(53, 35);
+            this.stripPanel2.Location = new System.Drawing.Point(56, 35);
             this.stripPanel2.Name = "stripPanel2";
             this.stripPanel2.Size = new System.Drawing.Size(3, 743);
             this.stripPanel2.TabIndex = 4;
@@ -651,6 +716,15 @@ namespace drawing_application_p19057
             this.drawingBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseMove);
             this.drawingBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseUp);
             // 
+            // aboutControl
+            // 
+            this.aboutControl.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.aboutControl.BackColor = System.Drawing.SystemColors.Control;
+            this.aboutControl.Location = new System.Drawing.Point(248, 134);
+            this.aboutControl.Name = "aboutControl";
+            this.aboutControl.Size = new System.Drawing.Size(558, 307);
+            this.aboutControl.TabIndex = 5;
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -658,6 +732,7 @@ namespace drawing_application_p19057
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(1003, 783);
+            this.Controls.Add(this.aboutControl);
             this.Controls.Add(this.stripPanel2);
             this.Controls.Add(this.stripPanel);
             this.Controls.Add(this.menuPanel);
@@ -728,12 +803,9 @@ namespace drawing_application_p19057
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem customizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem contentsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem indexToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.PictureBox moreColors;
@@ -744,6 +816,19 @@ namespace drawing_application_p19057
         private System.Windows.Forms.Label warningLbl;
         private System.Windows.Forms.TrackBar penWidth;
         private System.Windows.Forms.Button ellipseBtn;
+        private AboutControl aboutControl;
+        private System.Windows.Forms.Button eraserBtn;
+        private System.Windows.Forms.Label positionX;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label positionY;
+        private System.Windows.Forms.ToolTip penTip;
+        private System.Windows.Forms.ToolTip eraserTip;
+        private System.Windows.Forms.ToolTip lineTip;
+        private System.Windows.Forms.ToolTip ellipseTip;
+        private System.Windows.Forms.ToolTip circleTip;
+        private System.Windows.Forms.ToolTip squareTip;
+        private System.Windows.Forms.ToolTip penSizeTip;
     }
 }
 
