@@ -13,6 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
+using static System.Math;
+
 
 namespace drawing_application_p19057
 {
@@ -43,12 +45,12 @@ namespace drawing_application_p19057
         string path;
         protected Image image;
         protected Thread getImageThread;
-        //bool variables for selecting pen,circle,rectangle,line
+        //bool variables for selecting pen,circle,rectangle,line, ellipse etc
         private bool penActive = false;
         private bool lineActive = false;
         private bool circleActive = false;
         private bool squareActive = false;
-
+        private bool ellipseActive = false;
         private int mouseX,mouseY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
         private bool undoActive;
         private bool timelapse;
@@ -127,7 +129,16 @@ namespace drawing_application_p19057
         //drawing settings
         private void drawingBox_MouseUp(object sender, MouseEventArgs e)
         {
-            
+            if (ellipseActive)
+            {
+                mouseX1 = e.X;
+                mouseY1 = e.Y;
+                PenEllipseSettings penSettings = new PenEllipseSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+                Allcurves.Add(penSettings);
+                AllcurvesRedo.Add(penSettings);
+                drawingBox.Invalidate();
+            }
+
             if (circleActive )
             {
                 mouseX1 = e.X;
@@ -137,7 +148,17 @@ namespace drawing_application_p19057
                 AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
             }
+            if (squareActive && e.Button == MouseButtons.Left)
+            {
+                mouseX1 = Abs(e.X - mouseX);
+                mouseY1 = Abs(e.Y - mouseY);
+                PenSquareSettings penSettings = new PenSquareSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+                Allcurves.Add(penSettings);
+                AllcurvesRedo.Add(penSettings);
 
+                drawingBox.Invalidate();
+
+            }
             if (lineActive )
             {
                 mouseX1 = e.X;
@@ -145,7 +166,6 @@ namespace drawing_application_p19057
                 PenLineSettings penSettings = new PenLineSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
-
                 drawingBox.Invalidate();
 
             }
@@ -162,12 +182,21 @@ namespace drawing_application_p19057
     
         private void drawingBox_MouseMove(object sender, MouseEventArgs e)
         {
+            if(squareActive && e.Button == MouseButtons.Left) {
+               mouseMoveX = Abs(e.X - mouseX);
+               mouseMoveY = Abs(e.Y - mouseY);
+                drawingBox.Invalidate();
+            }
+            if(ellipseActive && e.Button == MouseButtons.Left) { //ellipse preview
+                mouseMoveX = e.X;
+                mouseMoveY = e.Y;
+                drawingBox.Invalidate();
+            }
             if (circleActive && e.Button == MouseButtons.Left ) //circle preview
             {
                 
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y; 
-                currentCircle.Add(e.Location);
                 drawingBox.Invalidate();
               
             }
@@ -207,8 +236,8 @@ namespace drawing_application_p19057
                     else
                     if (penSettigns is PenLineSettings)
                     {
-                        PenLineSettings penCircleSettings = (PenLineSettings)penSettigns;
-                        e.Graphics.DrawLine(penCircleSettings.Pen, penCircleSettings.Shapes.MouseX, penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseX1, penCircleSettings.Shapes.MouseY1);
+                        PenLineSettings penLineSettings = (PenLineSettings)penSettigns;
+                        e.Graphics.DrawLine(penLineSettings.Pen, penLineSettings.Shapes.MouseX, penLineSettings.Shapes.MouseY, penLineSettings.Shapes.MouseX1, penLineSettings.Shapes.MouseY1);
                     }
                     else
                     if (penSettigns is PenFreestyleSettings)
@@ -216,9 +245,23 @@ namespace drawing_application_p19057
                         PenFreestyleSettings penFreestyleSettings = (PenFreestyleSettings)penSettigns;
                         if (penFreestyleSettings.Points.Count > 1) e.Graphics.DrawCurve(penFreestyleSettings.Pen, penFreestyleSettings.Points.ToArray());
                     }
+                    else
+                    if (penSettigns is PenSquareSettings)
+                    {
+                        PenSquareSettings penSquareSettings = (PenSquareSettings)penSettigns;
+                         e.Graphics.DrawRectangle(penSquareSettings.Pen, penSquareSettings.Shapes.MouseX, penSquareSettings.Shapes.MouseY, penSquareSettings.Shapes.MouseX1, penSquareSettings.Shapes.MouseY1);
+                    }
+                    else
+                    if (penSettigns is PenEllipseSettings)
+                    {
+                        PenEllipseSettings penEllipseSettings = (PenEllipseSettings)penSettigns;
+                        e.Graphics.DrawEllipse(penEllipseSettings.Pen, penEllipseSettings.Shapes.MouseX, penEllipseSettings.Shapes.MouseY, penEllipseSettings.Shapes.MouseX1 - penEllipseSettings.Shapes.MouseX, penEllipseSettings.Shapes.MouseY1 - penEllipseSettings.Shapes.MouseY);
+                    }
 
                 }
             }
+            if (squareActive && (!undoActive)) e.Graphics.DrawRectangle(pen, mouseX, mouseY, mouseMoveX, mouseMoveY); // square preview
+            if (ellipseActive && (!undoActive)) e.Graphics.DrawEllipse(pen, mouseX, mouseY, mouseMoveX - mouseX, mouseMoveY - mouseY); //ellipse preview
             if (circleActive && (!undoActive))  e.Graphics.DrawEllipse(pen, mouseX, mouseY, mouseMoveY - mouseY, mouseMoveY - mouseY);  //circle preview
             if (lineActive && (!undoActive))  e.Graphics.DrawLine(pen, mouseX, mouseY, mouseMoveX, mouseMoveY); //line preview
             if (currentCurve.Count > 1) e.Graphics.DrawCurve(pen, currentCurve.ToArray()); //freestyle "preview"
@@ -267,6 +310,8 @@ namespace drawing_application_p19057
             lineBtn.BackColor = Color.WhiteSmoke;
             circleBtn.BackColor = Color.WhiteSmoke;
             squareBtn.BackColor = Color.WhiteSmoke;
+            ellipseBtn.BackColor = Color.WhiteSmoke;
+            ellipseActive = false;
         }
         private void lineBtn_Click(object sender, EventArgs e)
         {
@@ -278,6 +323,8 @@ namespace drawing_application_p19057
             penBtn.BackColor = Color.WhiteSmoke;
             circleBtn.BackColor = Color.WhiteSmoke;
             squareBtn.BackColor = Color.WhiteSmoke;
+            ellipseBtn.BackColor = Color.WhiteSmoke;
+            ellipseActive = false;
         }
 
         private void circleBtn_Click(object sender, EventArgs e)
@@ -290,6 +337,8 @@ namespace drawing_application_p19057
             penBtn.BackColor = Color.WhiteSmoke;
             squareBtn.BackColor = Color.WhiteSmoke;
             lineBtn.BackColor = Color.WhiteSmoke;
+            ellipseBtn.BackColor = Color.WhiteSmoke;
+            ellipseActive = false;
         }
 
         private void sqaureBtn_Click(object sender, EventArgs e)
@@ -302,6 +351,22 @@ namespace drawing_application_p19057
             penBtn.BackColor = Color.WhiteSmoke;
             circleBtn.BackColor = Color.WhiteSmoke;
             lineBtn.BackColor = Color.WhiteSmoke;
+            ellipseBtn.BackColor = Color.WhiteSmoke;
+            ellipseActive = false;
+        }
+        private void ellipseBtn_Click(object sender, EventArgs e)
+        {
+            ellipseActive = true;
+            squareActive = false;
+            ellipseBtn.BackColor = Color.Silver;
+            circleActive = false;
+            lineActive = false;
+            penActive = false;
+            squareActive = false;
+            penBtn.BackColor = Color.WhiteSmoke;
+            circleBtn.BackColor = Color.WhiteSmoke;
+            lineBtn.BackColor = Color.WhiteSmoke;
+            squareBtn.BackColor = Color.WhiteSmoke;
         }
         //colors selection
         private void moreColors_Click(object sender, EventArgs e)
@@ -550,7 +615,9 @@ namespace drawing_application_p19057
                 e.Effect = DragDropEffects.None;
         }
 
-       
+  
+
+
 
         //copying the image(Ctrl+C) from the drawingBox to clipboard
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -678,6 +745,20 @@ namespace drawing_application_p19057
             Shapes = new Shapes(Pen, shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
         }
 
+    }
+    public class PenEllipseSettings : PenSettings
+    {
+        public PenEllipseSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
+        {
+
+        } 
+    }
+    public class PenSquareSettings : PenSettings
+    {
+        public PenSquareSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
+        {
+
+        }
     }
 
     public class PenCircleSettings : PenSettings {
