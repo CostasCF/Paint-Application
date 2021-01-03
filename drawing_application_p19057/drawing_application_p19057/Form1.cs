@@ -53,11 +53,11 @@ namespace drawing_application_p19057
         private bool squareActive = false;
         private bool ellipseActive = false;
         private bool eraserActive = false;
-        private int mouseX,mouseY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
+        private int mouseDownX,mouseDownY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
         private bool undoActive;
         private bool timelapse;
-        private bool mouseActive = false;
-
+        private bool mouseDown = false;
+        int rectX, rectY, rectWidth, rectHeight;
         public Form1()
         {
             InitializeComponent();
@@ -166,54 +166,57 @@ namespace drawing_application_p19057
         //drawing settings
         private void drawingBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (ellipseActive && mouseActive  )
+            if (ellipseActive   )
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
-                PenEllipseSettings penSettings = new PenEllipseSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+                PenEllipseSettings penSettings = new PenEllipseSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
-                mouseActive = false;
+                mouseDown = false;
             }
 
-            if (circleActive && mouseActive)
+            if (circleActive )
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
-                PenCircleSettings penSettings = new PenCircleSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+                PenCircleSettings penSettings = new PenCircleSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
-                mouseActive = false;
+                mouseDown = false;
             }
-            if (squareActive && mouseActive)
+            if (squareActive )
             {
-                mouseX1 = e.X - mouseX;
-                mouseY1 = e.Y - mouseY;
-
-
-                PenSquareSettings penSettings = new PenSquareSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+                mouseX1 = e.X ;
+                mouseY1 = e.Y ;
+              
+                rectX = Math.Min(mouseDownX, mouseX1); //min between start X-value and current X value
+                rectY = Math.Min(mouseDownY, mouseY1);
+                rectWidth = Math.Abs(mouseDownX - mouseX1); // the width value should be the maximum between the start X- position and the current X position
+                rectHeight = Math.Abs(mouseDownY - mouseY1); 
+                PenSquareSettings penSettings = new PenSquareSettings(pen, currentCurve.ToList(), new Shapes(pen, rectX, rectY, rectWidth, rectHeight));
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
 
                 drawingBox.Invalidate();
-                mouseActive = false;
+                mouseDown = false;
 
             }
-            if (lineActive && mouseActive)
+            if (lineActive)
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y; 
-                PenLineSettings penSettings = new PenLineSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+                PenLineSettings penSettings = new PenLineSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
-                mouseActive = false;
+                mouseDown = false;
             }
             if (currentCurve.Count > 1)
             {
-                PenFreestyleSettings penSettings = new PenFreestyleSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseX, mouseY, mouseX1, mouseY1));
+                PenFreestyleSettings penSettings = new PenFreestyleSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 AllcurvesRedo.Add(penSettings);
             }
@@ -227,35 +230,32 @@ namespace drawing_application_p19057
             positionX.Text = e.X.ToString();
             positionY.Text = e.Y.ToString();
                 
-            if (squareActive && e.Button == MouseButtons.Left) {
-                mouseActive = true;
-
-
-                mouseMoveX = e.X - mouseX;
-                mouseMoveY = e.Y - mouseY;
+            if (squareActive && e.Button == MouseButtons.Left ) {
+                mouseMoveX = e.X;
+                mouseMoveY = e.Y;
+                rectX = Math.Min(mouseDownX, mouseMoveX); // min between start X- value and current X value
+                rectY = Math.Min(mouseDownY, mouseMoveY);
+                rectWidth = Math.Abs(mouseDownX - mouseMoveX); // the width value should be the maximum between the start X- position and the current X position
+                rectHeight = Math.Abs(mouseDownY - mouseMoveY);
+           
                 drawingBox.Invalidate();
-               // if (mouseMoveX > 0 && mouseMoveY > 0 ) { drawingBox.Invalidate(); } else if (mouseMoveX < 0 && mouseMoveY > 0) { Abs(mouseMoveX); drawingBox.Invalidate(); }
-
-
-
             }
-            if(ellipseActive && e.Button == MouseButtons.Left) { //ellipse preview
-                mouseActive = true;
+            if(ellipseActive && e.Button == MouseButtons.Left )
+            { //ellipse preview
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
                 drawingBox.Invalidate();
             }
             if (circleActive && e.Button == MouseButtons.Left) //circle preview
             {
-                mouseActive = true;
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y; 
                 drawingBox.Invalidate();
               
             }
-            if (lineActive && e.Button == MouseButtons.Left) //line preview
+            if (lineActive && e.Button == MouseButtons.Left ) //line preview
             {
-                mouseActive = true;
+               
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
                 drawingBox.Invalidate();
@@ -268,12 +268,13 @@ namespace drawing_application_p19057
         }
         private void drawingBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
+          
+                mouseDown = true;
                 undoActive = false;
-                mouseX = e.X;
-                mouseY = e.Y;
-            }
+                mouseDownX = e.X;
+                mouseDownY = e.Y;
+            
+
         }
 
         private void drawingBox_Paint(object sender, PaintEventArgs e)
@@ -303,7 +304,7 @@ namespace drawing_application_p19057
                     if (penSettigns is PenSquareSettings)
                     {
                         PenSquareSettings penSquareSettings = (PenSquareSettings)penSettigns;
-                         e.Graphics.DrawRectangle(penSquareSettings.Pen, penSquareSettings.Shapes.MouseX, penSquareSettings.Shapes.MouseY, penSquareSettings.Shapes.MouseX1, penSquareSettings.Shapes.MouseY1);
+                        e.Graphics.DrawRectangle(penSquareSettings.Pen, penSquareSettings.Shapes.MouseX, penSquareSettings.Shapes.MouseY, penSquareSettings.Shapes.MouseX1, penSquareSettings.Shapes.MouseY1);
                     }
                     else
                     if (penSettigns is PenEllipseSettings)
@@ -314,10 +315,10 @@ namespace drawing_application_p19057
 
                 }
             }
-            if (squareActive && (!undoActive)) e.Graphics.DrawRectangle(pen, mouseX, mouseY, mouseMoveX, mouseMoveY); // square preview
-            if (ellipseActive && (!undoActive)) e.Graphics.DrawEllipse(pen, mouseX, mouseY, mouseMoveX - mouseX, mouseMoveY - mouseY); //ellipse preview
-            if (circleActive && (!undoActive))  e.Graphics.DrawEllipse(pen, mouseX, mouseY, mouseMoveY - mouseY, mouseMoveY - mouseY);  //circle preview
-            if (lineActive && (!undoActive))  e.Graphics.DrawLine(pen, mouseX, mouseY, mouseMoveX, mouseMoveY); //line preview
+            if (squareActive && (!undoActive) && mouseDown) e.Graphics.DrawRectangle(pen, rectX, rectY, rectWidth, rectHeight); // square preview
+            if (ellipseActive && (!undoActive) && mouseDown) e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveX - mouseDownX, mouseMoveY - mouseDownY); //ellipse preview
+            if (circleActive && (!undoActive) && mouseDown)  e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveY - mouseDownY, mouseMoveY - mouseDownY);  //circle preview
+            if (lineActive && (!undoActive) && mouseDown)  e.Graphics.DrawLine(pen, mouseDownX, mouseDownY, mouseMoveX, mouseMoveY); //line preview
             if (currentCurve.Count > 1) e.Graphics.DrawCurve(pen, currentCurve.ToArray()); //freestyle "preview"
 
             //timelapse
@@ -647,6 +648,7 @@ namespace drawing_application_p19057
                 drawingBox.Image = null;
             }
             colorSelected = Color.Black;
+            pen = new Pen(colorSelected,pen.Width);
             Allcurves.Clear();
             AllcurvesRedo.Clear();
             circleActive = false;
