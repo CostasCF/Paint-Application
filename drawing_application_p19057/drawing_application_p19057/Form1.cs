@@ -32,7 +32,7 @@ namespace drawing_application_p19057
         private List<Point> currentCurve = new List<Point>();
         private List<Point> currentCircle = new List<Point>();
         private List<Point> currentLine = new List<Point>();
-        private List<PenSettings> AllcurvesUndo = new List<PenSettings>();
+        private List<PenSettings> AllcurvesRedoTheUndo = new List<PenSettings>();
         private List<PenSettings> AllcurvesRedo = new List<PenSettings>();
         private List<PenSettings> Allcurves = new List<PenSettings>();
         // Tools for drawing
@@ -268,8 +268,8 @@ namespace drawing_application_p19057
         }
         private void drawingBox_MouseDown(object sender, MouseEventArgs e)
         {
-          
-                mouseDown = true;
+            AllcurvesRedoTheUndo.Clear();
+                  mouseDown = true;
                 undoActive = false;
                 mouseDownX = e.X;
                 mouseDownY = e.Y;
@@ -279,6 +279,7 @@ namespace drawing_application_p19057
 
         private void drawingBox_Paint(object sender, PaintEventArgs e)
         {
+
             if (timelapse == false)
             {
                 foreach (PenSettings penSettigns in Allcurves)
@@ -286,40 +287,47 @@ namespace drawing_application_p19057
                     if (penSettigns is PenCircleSettings)
                     {
                         PenCircleSettings penCircleSettings = (PenCircleSettings)penSettigns; //pensettings object is type PenCircleSettings (casting)
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; //smoothing the lines
                         e.Graphics.DrawEllipse(penCircleSettings.Pen, penCircleSettings.Shapes.MouseX, penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseY1 - penCircleSettings.Shapes.MouseY, penCircleSettings.Shapes.MouseY1 - penCircleSettings.Shapes.MouseY);
                     }
                     else
                     if (penSettigns is PenLineSettings)
                     {
                         PenLineSettings penLineSettings = (PenLineSettings)penSettigns;
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; //smoothing the lines
                         e.Graphics.DrawLine(penLineSettings.Pen, penLineSettings.Shapes.MouseX, penLineSettings.Shapes.MouseY, penLineSettings.Shapes.MouseX1, penLineSettings.Shapes.MouseY1);
                     }
                     else
                     if (penSettigns is PenFreestyleSettings)
                     {
                         PenFreestyleSettings penFreestyleSettings = (PenFreestyleSettings)penSettigns;
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; //smoothing the lines
                         if (penFreestyleSettings.Points.Count > 1) e.Graphics.DrawCurve(penFreestyleSettings.Pen, penFreestyleSettings.Points.ToArray());
                     }
                     else
                     if (penSettigns is PenSquareSettings)
                     {
                         PenSquareSettings penSquareSettings = (PenSquareSettings)penSettigns;
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; //smoothing the lines
                         e.Graphics.DrawRectangle(penSquareSettings.Pen, penSquareSettings.Shapes.MouseX, penSquareSettings.Shapes.MouseY, penSquareSettings.Shapes.MouseX1, penSquareSettings.Shapes.MouseY1);
                     }
                     else
                     if (penSettigns is PenEllipseSettings)
                     {
                         PenEllipseSettings penEllipseSettings = (PenEllipseSettings)penSettigns;
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; //smoothing the lines
                         e.Graphics.DrawEllipse(penEllipseSettings.Pen, penEllipseSettings.Shapes.MouseX, penEllipseSettings.Shapes.MouseY, penEllipseSettings.Shapes.MouseX1 - penEllipseSettings.Shapes.MouseX, penEllipseSettings.Shapes.MouseY1 - penEllipseSettings.Shapes.MouseY);
                     }
 
                 }
             }
-            if (squareActive && (!undoActive) && mouseDown) e.Graphics.DrawRectangle(pen, rectX, rectY, rectWidth, rectHeight); // square preview
-            if (ellipseActive && (!undoActive) && mouseDown) e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveX - mouseDownX, mouseMoveY - mouseDownY); //ellipse preview
-            if (circleActive && (!undoActive) && mouseDown)  e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveY - mouseDownY, mouseMoveY - mouseDownY);  //circle preview
-            if (lineActive && (!undoActive) && mouseDown)  e.Graphics.DrawLine(pen, mouseDownX, mouseDownY, mouseMoveX, mouseMoveY); //line preview
-            if (currentCurve.Count > 1) e.Graphics.DrawCurve(pen, currentCurve.ToArray()); //freestyle "preview"
+            if (squareActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawRectangle(pen, rectX, rectY, rectWidth, rectHeight); }// square preview
+            if (ellipseActive && (!undoActive) && mouseDown) {  e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveX - mouseDownX, mouseMoveY - mouseDownY); }//ellipse preview
+            if (circleActive && (!undoActive) && mouseDown) {  e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveY - mouseDownY, mouseMoveY - mouseDownY); }  //circle preview
+            if (lineActive && (!undoActive) && mouseDown) {  e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawLine(pen, mouseDownX, mouseDownY, mouseMoveX, mouseMoveY); } //line preview
+            if (currentCurve.Count > 1){ pen.DashCap = System.Drawing.Drawing2D.DashCap.Round; e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawCurve(pen, currentCurve.ToArray()); } //freestyle "preview"
+
+
 
             //timelapse
             if (timelapse == true)
@@ -626,7 +634,7 @@ namespace drawing_application_p19057
         {
           if(Allcurves.Count > 0) {
                 undoActive = true;
-                
+                AllcurvesRedoTheUndo.AddRange(Allcurves);
                 Allcurves.RemoveAt(Allcurves.Count-1);
             drawingBox.Invalidate();
                
@@ -635,7 +643,7 @@ namespace drawing_application_p19057
         private void redoToolStripMenuItem_Click(object sender, EventArgs e) //pseudoRedo
         {
 
-            Allcurves.AddRange(AllcurvesRedo);
+            Allcurves.AddRange(AllcurvesRedoTheUndo);
             drawingBox.Invalidate();
            
            
@@ -647,6 +655,7 @@ namespace drawing_application_p19057
                 drawingBox.Image.Dispose();
                 drawingBox.Image = null;
             }
+            AllcurvesRedoTheUndo.Clear();
             colorSelected = Color.Black;
             pen = new Pen(colorSelected,pen.Width);
             Allcurves.Clear();
@@ -876,7 +885,9 @@ namespace drawing_application_p19057
         public Shapes Shapes { get; set; }
         public PenSettings(Pen pen, List<Point> points, Shapes shape)
         {
+    
             Pen = new Pen(pen.Color, pen.Width);
+            Pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
             Points = points;
             Shapes = new Shapes(Pen, shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
         }
