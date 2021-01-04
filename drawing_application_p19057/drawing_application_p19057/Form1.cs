@@ -61,6 +61,7 @@ namespace drawing_application_p19057
         public Form1()
         {
             InitializeComponent();
+            this.MinimumSize = new Size(993, 773);
             menuStrip1.Renderer = new ToolStripProfessionalRenderer(new ColorTable());
             warningLbl.Visible = false;
             penWidth.Value = 1;
@@ -70,6 +71,8 @@ namespace drawing_application_p19057
             penActive = true;
             pen = new Pen(colorSelected, penWidth.Value);
             penBtn.BackColor = Color.Silver;
+            undoToolStripMenuItem.Enabled = false;
+            redoToolStripMenuItem.Enabled = false;
         }
 
 
@@ -269,11 +272,12 @@ namespace drawing_application_p19057
         private void drawingBox_MouseDown(object sender, MouseEventArgs e)
         {
             AllcurvesRedoTheUndo.Clear();
-                  mouseDown = true;
-                undoActive = false;
-                mouseDownX = e.X;
-                mouseDownY = e.Y;
-            
+            mouseDown = true;
+            undoActive = false;
+            mouseDownX = e.X;
+            mouseDownY = e.Y;
+            undoToolStripMenuItem.Enabled = true;
+            redoToolStripMenuItem.Enabled = false;
 
         }
 
@@ -633,6 +637,7 @@ namespace drawing_application_p19057
         private void undoToolStripMenuItem_Click(object sender, EventArgs e) //pseudoUndo
         {
           if(Allcurves.Count > 0) {
+                redoToolStripMenuItem.Enabled = true;
                 undoActive = true;
                 AllcurvesRedoTheUndo.AddRange(Allcurves);
                 Allcurves.RemoveAt(Allcurves.Count-1);
@@ -642,11 +647,8 @@ namespace drawing_application_p19057
         }
         private void redoToolStripMenuItem_Click(object sender, EventArgs e) //pseudoRedo
         {
-
             Allcurves.AddRange(AllcurvesRedoTheUndo);
             drawingBox.Invalidate();
-           
-           
         }
         private void clearningSequence()
         {
@@ -671,6 +673,8 @@ namespace drawing_application_p19057
             squareBtn.BackColor = Color.WhiteSmoke;
             lineBtn.BackColor = Color.WhiteSmoke;
             drawingBox.Invalidate();
+            undoToolStripMenuItem.Enabled = false;
+            redoToolStripMenuItem.Enabled = false;
         }
 
         //tools settings
