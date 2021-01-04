@@ -10,3 +10,12 @@ C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_applicatio
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.pdb
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.AboutControl.resources
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.csproj.ResolveComReference.cache
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\EntityFramework.dll
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\System.Data.SQLite.dll
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\EntityFramework.xml
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\System.Data.SQLite.xml
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.csproj.CopyComplete
