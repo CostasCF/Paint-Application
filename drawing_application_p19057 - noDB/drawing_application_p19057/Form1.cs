@@ -638,6 +638,8 @@ namespace drawing_application_p19057
             penActive = true;
             squareActive = false;
             eraserActive = false;
+            ellipseActive = false;
+            ellipseBtn.BackColor = Color.WhiteSmoke;
             eraserBtn.BackColor = Color.WhiteSmoke;
             circleBtn.BackColor = Color.WhiteSmoke;
             squareBtn.BackColor = Color.WhiteSmoke;

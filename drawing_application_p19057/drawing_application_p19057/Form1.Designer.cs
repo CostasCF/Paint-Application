@@ -533,7 +533,6 @@ namespace drawing_application_p19057
             // penWidth
             // 
             this.penWidth.Location = new System.Drawing.Point(9, 246);
-            this.penWidth.Maximum = 20;
             this.penWidth.Minimum = 1;
             this.penWidth.Name = "penWidth";
             this.penWidth.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -745,6 +744,7 @@ namespace drawing_application_p19057
             this.Padding = new System.Windows.Forms.Padding(5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.topPanel.ResumeLayout(false);

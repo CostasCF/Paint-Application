@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Timers;
-using static System.Math;
 
 
 namespace drawing_application_p19057
@@ -27,11 +22,12 @@ namespace drawing_application_p19057
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-
+        //variables for SQL
+        String connectionString = "Data Source=ShapeDB.db;Version=3;";
+        SQLiteConnection conn;
+        DataEntry newDataEntry;
         // List of user's points he creates
         private List<Point> currentCurve = new List<Point>();
-        private List<Point> currentCircle = new List<Point>();
-        private List<Point> currentLine = new List<Point>();
         private List<PenSettings> AllcurvesRedoTheUndo = new List<PenSettings>();
         private List<PenSettings> AllcurvesRedo = new List<PenSettings>();
         private List<PenSettings> Allcurves = new List<PenSettings>();
@@ -53,7 +49,7 @@ namespace drawing_application_p19057
         private bool squareActive = false;
         private bool ellipseActive = false;
         private bool eraserActive = false;
-        private int mouseDownX,mouseDownY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
+        private int mouseDownX, mouseDownY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
         private bool undoActive;
         private bool timelapse;
         private bool mouseDown = false;
@@ -74,6 +70,10 @@ namespace drawing_application_p19057
             undoToolStripMenuItem.Enabled = false;
             redoToolStripMenuItem.Enabled = false;
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            conn = new SQLiteConnection(connectionString);
+        }
 
 
         //general settings
@@ -84,7 +84,7 @@ namespace drawing_application_p19057
 
         private void maximizeBtn_Click(object sender, EventArgs e)
         {
-           
+
             if (this.WindowState == FormWindowState.Maximized) { maximizeBtn.BackgroundImage = Properties.Resources.maximize_button_24px; this.WindowState = FormWindowState.Normal; } else { maximizeBtn.BackgroundImage = Properties.Resources.restore_down; this.WindowState = FormWindowState.Maximized; }
         }
 
@@ -110,12 +110,12 @@ namespace drawing_application_p19057
 
         private void fileToolStripMenuItem1_MouseHover(object sender, EventArgs e)
         {
-           // fileToolStripMenuItem1.BackColor = Color.Red;
+            // fileToolStripMenuItem1.BackColor = Color.Red;
         }
 
         private void fileToolStripMenuItem1_MouseMove(object sender, MouseEventArgs e)
         {
-          //  fileToolStripMenuItem1.BackColor = Color.Red;
+            //  fileToolStripMenuItem1.BackColor = Color.Red;
         }
 
         private void moreColors_MouseLeave(object sender, EventArgs e)
@@ -125,7 +125,7 @@ namespace drawing_application_p19057
 
         private void moreColors_MouseEnter(object sender, EventArgs e)
         {
-            
+
             moreColors.BackColor = Color.FromArgb(63, 63, 65);
         }
         private void moreColors_MouseHover(object sender, EventArgs e)
@@ -143,7 +143,7 @@ namespace drawing_application_p19057
 
         private void lineBtn_MouseHover(object sender, EventArgs e)
         {
-            lineTip.SetToolTip(lineBtn,"Line");
+            lineTip.SetToolTip(lineBtn, "Line");
         }
 
         private void ellipseBtn_MouseHover(object sender, EventArgs e)
@@ -169,81 +169,81 @@ namespace drawing_application_p19057
         //drawing settings
         private void drawingBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (ellipseActive   )
+            if (ellipseActive)
             {
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
                 PenEllipseSettings penSettings = new PenEllipseSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
-                AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
                 mouseDown = false;
+                InsertingData("ellipse");
             }
 
-            if (circleActive )
+            if (circleActive)
             {
+            
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
                 PenCircleSettings penSettings = new PenCircleSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
-                AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
-                mouseDown = false;
+                mouseDown = false; 
+                InsertingData("circle");
             }
-            if (squareActive )
+            if (squareActive)
             {
-                mouseX1 = e.X ;
-                mouseY1 = e.Y ;
-              
+                mouseX1 = e.X;
+                mouseY1 = e.Y;
                 rectX = Math.Min(mouseDownX, mouseX1); //min between start X-value and current X value
                 rectY = Math.Min(mouseDownY, mouseY1);
                 rectWidth = Math.Abs(mouseDownX - mouseX1); // the width value should be the maximum between the start X- position and the current X position
-                rectHeight = Math.Abs(mouseDownY - mouseY1); 
+                rectHeight = Math.Abs(mouseDownY - mouseY1);
                 PenSquareSettings penSettings = new PenSquareSettings(pen, currentCurve.ToList(), new Shapes(pen, rectX, rectY, rectWidth, rectHeight));
                 Allcurves.Add(penSettings);
-                AllcurvesRedo.Add(penSettings);
-
                 drawingBox.Invalidate();
                 mouseDown = false;
-
+                InsertingData("square");
             }
             if (lineActive)
             {
                 mouseX1 = e.X;
-                mouseY1 = e.Y; 
+                mouseY1 = e.Y;
                 PenLineSettings penSettings = new PenLineSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
-                AllcurvesRedo.Add(penSettings);
                 drawingBox.Invalidate();
                 mouseDown = false;
+                InsertingData("line");
+
             }
             if (currentCurve.Count > 1)
             {
                 PenFreestyleSettings penSettings = new PenFreestyleSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
-                AllcurvesRedo.Add(penSettings);
-            }
+                drawingBox.Invalidate();
+                currentCurve.Clear();
+                InsertingData("freestyle");
 
-            currentCurve.Clear();
-            drawingBox.Invalidate();
+            }
         }
-    
+
         private void drawingBox_MouseMove(object sender, MouseEventArgs e)
         {
             positionX.Text = e.X.ToString();
             positionY.Text = e.Y.ToString();
-                
-            if (squareActive && e.Button == MouseButtons.Left ) {
+
+            if (squareActive && e.Button == MouseButtons.Left)
+            {
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
                 rectX = Math.Min(mouseDownX, mouseMoveX); // min between start X- value and current X value
                 rectY = Math.Min(mouseDownY, mouseMoveY);
                 rectWidth = Math.Abs(mouseDownX - mouseMoveX); // the width value should be the maximum between the start X- position and the current X position
                 rectHeight = Math.Abs(mouseDownY - mouseMoveY);
-           
+
                 drawingBox.Invalidate();
             }
-            if(ellipseActive && e.Button == MouseButtons.Left )
+            if (ellipseActive && e.Button == MouseButtons.Left)
             { //ellipse preview
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
@@ -252,13 +252,13 @@ namespace drawing_application_p19057
             if (circleActive && e.Button == MouseButtons.Left) //circle preview
             {
                 mouseMoveX = e.X;
-                mouseMoveY = e.Y; 
+                mouseMoveY = e.Y;
                 drawingBox.Invalidate();
-              
+
             }
-            if (lineActive && e.Button == MouseButtons.Left ) //line preview
+            if (lineActive && e.Button == MouseButtons.Left) //line preview
             {
-               
+
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
                 drawingBox.Invalidate();
@@ -326,15 +326,15 @@ namespace drawing_application_p19057
                 }
             }
             if (squareActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawRectangle(pen, rectX, rectY, rectWidth, rectHeight); }// square preview
-            if (ellipseActive && (!undoActive) && mouseDown) {  e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveX - mouseDownX, mouseMoveY - mouseDownY); }//ellipse preview
-            if (circleActive && (!undoActive) && mouseDown) {  e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveY - mouseDownY, mouseMoveY - mouseDownY); }  //circle preview
-            if (lineActive && (!undoActive) && mouseDown) {  e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawLine(pen, mouseDownX, mouseDownY, mouseMoveX, mouseMoveY); } //line preview
-            if (currentCurve.Count > 1){ pen.DashCap = System.Drawing.Drawing2D.DashCap.Round; e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawCurve(pen, currentCurve.ToArray()); } //freestyle "preview"
+            if (ellipseActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveX - mouseDownX, mouseMoveY - mouseDownY); }//ellipse preview
+            if (circleActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveY - mouseDownY, mouseMoveY - mouseDownY); }  //circle preview
+            if (lineActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawLine(pen, mouseDownX, mouseDownY, mouseMoveX, mouseMoveY); } //line preview
+            if (currentCurve.Count > 1) { pen.DashCap = System.Drawing.Drawing2D.DashCap.Round; e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawCurve(pen, currentCurve.ToArray()); } //freestyle "preview"
 
 
 
             //timelapse
-        
+
         }
         private void eraserBtn_Click(object sender, EventArgs e)
         {
@@ -370,19 +370,19 @@ namespace drawing_application_p19057
         }
         private void lineBtn_Click(object sender, EventArgs e)
         {
-                pen = new Pen(colorSelected, penWidth.Value);
-                lineActive = true;
-                lineBtn.BackColor = Color.Silver;
-                penActive = false;
-                squareActive = false;
-                circleActive = false;
-                penBtn.BackColor = Color.WhiteSmoke;
-                circleBtn.BackColor = Color.WhiteSmoke;
-                squareBtn.BackColor = Color.WhiteSmoke;
-                ellipseBtn.BackColor = Color.WhiteSmoke;
-                ellipseActive = false;
-                eraserBtn.BackColor = Color.WhiteSmoke;
-                eraserActive = false;
+            pen = new Pen(colorSelected, penWidth.Value);
+            lineActive = true;
+            lineBtn.BackColor = Color.Silver;
+            penActive = false;
+            squareActive = false;
+            circleActive = false;
+            penBtn.BackColor = Color.WhiteSmoke;
+            circleBtn.BackColor = Color.WhiteSmoke;
+            squareBtn.BackColor = Color.WhiteSmoke;
+            ellipseBtn.BackColor = Color.WhiteSmoke;
+            ellipseActive = false;
+            eraserBtn.BackColor = Color.WhiteSmoke;
+            eraserActive = false;
         }
 
         private void circleBtn_Click(object sender, EventArgs e)
@@ -437,13 +437,15 @@ namespace drawing_application_p19057
         //colors selection
         private void moreColors_Click(object sender, EventArgs e)
         {
-            if (colorDialog1.ShowDialog() == DialogResult.OK) { if (eraserActive == false ) colorSelected = colorDialog1.Color; pen = new Pen(colorSelected, penWidth.Value);
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (eraserActive == false) colorSelected = colorDialog1.Color; pen = new Pen(colorSelected, penWidth.Value);
             }
         }
 
         private void redBox_Click(object sender, EventArgs e)
         {
-            if (eraserActive == false )
+            if (eraserActive == false)
             {
                 colorSelected = Color.Red;
                 pen = new Pen(colorSelected, penWidth.Value);
@@ -464,7 +466,7 @@ namespace drawing_application_p19057
 
         private void yellowBox_Click(object sender, EventArgs e)
         {
-            if (eraserActive == false )
+            if (eraserActive == false)
             {
                 colorSelected = Color.Yellow;
                 pen = new Pen(colorSelected, penWidth.Value);
@@ -571,7 +573,7 @@ namespace drawing_application_p19057
             if (pd.ShowDialog() == DialogResult.OK)
                 doc.Print();
         }
-        
+
         private void Doc_PrintPage(object sender, PrintPageEventArgs e)
         {
             //Print image
@@ -606,13 +608,14 @@ namespace drawing_application_p19057
         //editing settings
         private void undoToolStripMenuItem_Click(object sender, EventArgs e) //pseudoUndo
         {
-          if(Allcurves.Count > 0) {
+            if (Allcurves.Count > 0)
+            {
                 redoToolStripMenuItem.Enabled = true;
                 undoActive = true;
                 AllcurvesRedoTheUndo.AddRange(Allcurves);
-                Allcurves.RemoveAt(Allcurves.Count-1);
-            drawingBox.Invalidate();
-               
+                Allcurves.RemoveAt(Allcurves.Count - 1);
+                drawingBox.Invalidate();
+
             }
         }
         private void redoToolStripMenuItem_Click(object sender, EventArgs e) //pseudoRedo
@@ -629,7 +632,7 @@ namespace drawing_application_p19057
             }
             AllcurvesRedoTheUndo.Clear();
             colorSelected = Color.Black;
-            pen = new Pen(colorSelected,pen.Width);
+            pen = new Pen(colorSelected, pen.Width);
             Allcurves.Clear();
             AllcurvesRedo.Clear();
             circleActive = false;
@@ -638,6 +641,8 @@ namespace drawing_application_p19057
             penActive = true;
             squareActive = false;
             eraserActive = false;
+            ellipseActive = false;
+            ellipseBtn.BackColor = Color.WhiteSmoke;
             eraserBtn.BackColor = Color.WhiteSmoke;
             circleBtn.BackColor = Color.WhiteSmoke;
             squareBtn.BackColor = Color.WhiteSmoke;
@@ -698,8 +703,7 @@ namespace drawing_application_p19057
             }
         }
 
-  
-
+      
         protected void LoadImage()
 
         {
@@ -726,17 +730,21 @@ namespace drawing_application_p19057
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             aboutControl.Show();
+            
         }
 
-      
 
 
-
-
-
-
-
-
+        //data entry for sqlite db
+        public void InsertingData(String shape)
+        {
+            conn.Open();
+            newDataEntry = new DataEntry(shape);         
+            String insertQuery = "Insert into Shapes(name,Time) values('" + newDataEntry.Name + "','" + newDataEntry.timeStamp + "')";
+            SQLiteCommand cmd = new SQLiteCommand(insertQuery, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
 
         //copying the image(Ctrl+C) from the drawingBox to clipboard
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -768,7 +776,8 @@ namespace drawing_application_p19057
             warningLbl.Invoke(new Action(() => warningLbl.Text = message));
             warningLbl.Invoke(new Action(() => warningLbl.Visible = true));
 
-            timer.Elapsed += (s, en) => { //calls Elapsed event for the timer
+            timer.Elapsed += (s, en) =>
+            { //calls Elapsed event for the timer
                 warningLbl.Invoke(new Action(() => warningLbl.Visible = false));
             };
             timer.Enabled = true; // Starts the timer. 
@@ -830,24 +839,35 @@ namespace drawing_application_p19057
                 return cp;
             }
         }
-    }
+    
 
+    }
+    public class DataEntry
+    {
+       public String Name { get; set; }
+       public  String timeStamp { get; set; }
+        public DataEntry(String name) 
+        {
+            Name = name;
+            timeStamp = DateTime.Now.ToString();
+        }
+    }
     public class Shapes
     {
         public Pen Pen { get; set; }
-       public  int MouseX { get; set; }
-        public  int MouseY { get; set; }
-        public int MouseX1{ get; set; }
+        public int MouseX { get; set; }
+        public int MouseY { get; set; }
+        public int MouseX1 { get; set; }
         public int MouseY1 { get; set; }
 
-       public Shapes(Pen pen, int mouseX, int mouseY, int mouseX1, int mouseY1)
+        public Shapes(Pen pen, int mouseX, int mouseY, int mouseX1, int mouseY1)
         {
-             Pen = new Pen(pen.Color, pen.Width);
-             MouseX =  mouseX;
-             MouseY = mouseY;
-             MouseX1 = mouseX1;
-             MouseY1 = mouseY1;
-           
+            Pen = new Pen(pen.Color, pen.Width);
+            MouseX = mouseX;
+            MouseY = mouseY;
+            MouseX1 = mouseX1;
+            MouseY1 = mouseY1;
+
         }
     }
     //pen settings
@@ -859,7 +879,7 @@ namespace drawing_application_p19057
         public Shapes Shapes { get; set; }
         public PenSettings(Pen pen, List<Point> points, Shapes shape)
         {
-    
+
             Pen = new Pen(pen.Color, pen.Width);
             Pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
             Points = points;
@@ -872,7 +892,7 @@ namespace drawing_application_p19057
         public PenEllipseSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
         {
 
-        } 
+        }
     }
     public class PenSquareSettings : PenSettings
     {
@@ -882,8 +902,9 @@ namespace drawing_application_p19057
         }
     }
 
-    public class PenCircleSettings : PenSettings {
-        public PenCircleSettings(Pen pen, List<Point> points, Shapes shape):base(pen,points,shape)
+    public class PenCircleSettings : PenSettings
+    {
+        public PenCircleSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
         {
 
         }
@@ -918,7 +939,7 @@ namespace drawing_application_p19057
         {
             get { return Color.Transparent; }
         }
-     
+
 
         public override Color MenuItemBorder
         {
