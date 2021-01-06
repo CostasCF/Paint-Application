@@ -54,6 +54,10 @@ namespace drawing_application_p19057
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.houseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boobiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pussyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -93,6 +97,7 @@ namespace drawing_application_p19057
             this.circleTip = new System.Windows.Forms.ToolTip(this.components);
             this.squareTip = new System.Windows.Forms.ToolTip(this.components);
             this.penSizeTip = new System.Windows.Forms.ToolTip(this.components);
+            this.timelapseTimer = new System.Windows.Forms.Timer(this.components);
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -323,10 +328,39 @@ namespace drawing_application_p19057
             // 
             // optionsToolStripMenuItem1
             // 
+            this.optionsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.houseToolStripMenuItem,
+            this.dickToolStripMenuItem,
+            this.boobiesToolStripMenuItem,
+            this.pussyToolStripMenuItem});
             this.optionsToolStripMenuItem1.Name = "optionsToolStripMenuItem1";
             this.optionsToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
             this.optionsToolStripMenuItem1.Text = "Create a timelapse";
             this.optionsToolStripMenuItem1.Click += new System.EventHandler(this.optionsToolStripMenuItem1_Click);
+            // 
+            // houseToolStripMenuItem
+            // 
+            this.houseToolStripMenuItem.Name = "houseToolStripMenuItem";
+            this.houseToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.houseToolStripMenuItem.Text = "House";
+            // 
+            // dickToolStripMenuItem
+            // 
+            this.dickToolStripMenuItem.Name = "dickToolStripMenuItem";
+            this.dickToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.dickToolStripMenuItem.Text = "Dick";
+            // 
+            // boobiesToolStripMenuItem
+            // 
+            this.boobiesToolStripMenuItem.Name = "boobiesToolStripMenuItem";
+            this.boobiesToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.boobiesToolStripMenuItem.Text = "Boobies";
+            // 
+            // pussyToolStripMenuItem
+            // 
+            this.pussyToolStripMenuItem.Name = "pussyToolStripMenuItem";
+            this.pussyToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.pussyToolStripMenuItem.Text = "Pussy";
             // 
             // helpToolStripMenuItem1
             // 
@@ -724,6 +758,9 @@ namespace drawing_application_p19057
             this.aboutControl.Size = new System.Drawing.Size(558, 307);
             this.aboutControl.TabIndex = 5;
             // 
+            // timelapseTimer
+            // 
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -747,6 +784,7 @@ namespace drawing_application_p19057
             this.Load += new System.EventHandler(this.Form1_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            this.DragLeave += new System.EventHandler(this.Form1_DragLeave);
             this.topPanel.ResumeLayout(false);
             this.topPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).EndInit();
@@ -829,6 +867,11 @@ namespace drawing_application_p19057
         private System.Windows.Forms.ToolTip circleTip;
         private System.Windows.Forms.ToolTip squareTip;
         private System.Windows.Forms.ToolTip penSizeTip;
+        private System.Windows.Forms.ToolStripMenuItem houseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dickToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem boobiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pussyToolStripMenuItem;
+        private System.Windows.Forms.Timer timelapseTimer;
     }
 }
 

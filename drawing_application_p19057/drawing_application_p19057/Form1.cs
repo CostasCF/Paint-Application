@@ -29,8 +29,7 @@ namespace drawing_application_p19057
         // List of user's points he creates
         private List<Point> currentCurve = new List<Point>();
         private List<PenSettings> AllcurvesRedoTheUndo = new List<PenSettings>();
-        private List<PenSettings> AllcurvesRedo = new List<PenSettings>();
-        private List<PenSettings> Allcurves = new List<PenSettings>();
+        public static List<PenSettings> Allcurves = new List<PenSettings>();
         // Tools for drawing
         private Pen pen;
         private Bitmap bmp;
@@ -182,13 +181,13 @@ namespace drawing_application_p19057
 
             if (circleActive)
             {
-            
+
                 mouseX1 = e.X;
                 mouseY1 = e.Y;
                 PenCircleSettings penSettings = new PenCircleSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 drawingBox.Invalidate();
-                mouseDown = false; 
+                mouseDown = false;
                 InsertingData("circle");
             }
             if (squareActive)
@@ -634,7 +633,6 @@ namespace drawing_application_p19057
             colorSelected = Color.Black;
             pen = new Pen(colorSelected, pen.Width);
             Allcurves.Clear();
-            AllcurvesRedo.Clear();
             circleActive = false;
             lineActive = false;
             penBtn.BackColor = Color.Silver;
@@ -652,19 +650,8 @@ namespace drawing_application_p19057
             redoToolStripMenuItem.Enabled = false;
         }
 
-        //tools settings
-        private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Coming Soon!");
-
-
-        }
-
-        private void creatingTimelapse()
-        {
-            timelapse = true;
-            drawingBox.Invalidate();
-        }
+   
+     
 
         //drag and drop images onto the drawingBox
         private bool GetFilename(out string filename, DragEventArgs e)
@@ -692,6 +679,7 @@ namespace drawing_application_p19057
 
         private void Form1_DragDrop(object sender, DragEventArgs e)
         {
+            drawingBox.BackColor = Color.White;
             if (validData)
             {
                 while (getImageThread.IsAlive)
@@ -700,22 +688,27 @@ namespace drawing_application_p19057
                     Thread.Sleep(0);
                 }
                 drawingBox.Image = image;
+
             }
         }
 
-      
+
         protected void LoadImage()
 
         {
             image = new Bitmap(path);
         }
 
+
+
         private void Form1_DragEnter(object sender, DragEventArgs e)
         {
+
             string filename;
             validData = GetFilename(out filename, e);
             if (validData)
             {
+                drawingBox.BackColor = Color.Red;
                 path = filename;
                 getImageThread = new Thread(new ThreadStart(LoadImage));
                 getImageThread.Start();
@@ -726,11 +719,18 @@ namespace drawing_application_p19057
         }
 
 
+
+        private void Form1_DragLeave(object sender, EventArgs e)
+        {
+            drawingBox.BackColor = Color.White;
+
+        }
+
         //about control appears
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             aboutControl.Show();
-            
+
         }
 
 
@@ -739,7 +739,7 @@ namespace drawing_application_p19057
         public void InsertingData(String shape)
         {
             conn.Open();
-            newDataEntry = new DataEntry(shape);         
+            newDataEntry = new DataEntry(shape);
             String insertQuery = "Insert into Shapes(name,Time) values('" + newDataEntry.Name + "','" + newDataEntry.timeStamp + "')";
             SQLiteCommand cmd = new SQLiteCommand(insertQuery, conn);
             cmd.ExecuteNonQuery();
@@ -839,134 +839,197 @@ namespace drawing_application_p19057
                 return cp;
             }
         }
-    
+
+        //tools settings
+        private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            creatingTimelapse();
+
+        }
+
+      //  List<TimelapseSettings> autoCurves = new List<TimelapseSettings>();
+        TimelapseSettings timelapseSettings;
+        private void creatingTimelapse()
+        {
+            timelapseSettings = new TimelapseSettings("House", Allcurves, 2);
+            Console.WriteLine("Made timelapseSettings");
+            clearningSequence();
+            timelapseSettings.DrawShape(); //timer starts
+            Console.WriteLine("Drew timelapse");
+
+        
+        }
+        //timelapseSettings
+        public class TimelapseSettings
+        {
+            public string Name { get; set; }
+            public List<PenSettings> AllcurvesTl { get; set; }
+            public int ListIndex { get; set; } = 0;
+            Form1 form;
+            public System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            public TimelapseSettings(string name, List<PenSettings> allcurvesTimelapse, int durationSeconds)
+            {
+                Name = name;
+                AllcurvesTl = allcurvesTimelapse.ToList();
+                //adding the tick event to the timer
+                timer.Tick += new EventHandler(timelapseTimer_Tick);
+
+                //finding the interval based on the desired animation's duration of it.
+                timer.Interval = (durationSeconds * 1000) / AllcurvesTl.Count;
+            }
+      
+            private void timelapseTimer_Tick(object sender, EventArgs e)
+            {
+                try
+                {
+
+                    Allcurves.Add(AllcurvesTl[ListIndex]);
+                    form.drawingBox.Invalidate();
+                    ListIndex++;
+                }
+                catch (ArgumentOutOfRangeException) 
+                { 
+                    ListIndex = 0;
+                    timer.Stop();
+                }
+            }
+            public void DrawShape()
+            {
+                form = (Form1)Application.OpenForms[0];
+                timer.Start(); //starts the timer
+            }
+        }
+
+
+        public class DataEntry
+        {
+            public String Name { get; set; }
+            public String timeStamp { get; set; }
+            public DataEntry(String name)
+            {
+                Name = name;
+                timeStamp = DateTime.Now.ToString();
+            }
+        }
+
+       
+
+        public class Shapes
+        {
+            public Pen Pen { get; set; }
+            public int MouseX { get; set; }
+            public int MouseY { get; set; }
+            public int MouseX1 { get; set; }
+            public int MouseY1 { get; set; }
+
+            public Shapes(Pen pen, int mouseX, int mouseY, int mouseX1, int mouseY1)
+            {
+                Pen = new Pen(pen.Color, pen.Width);
+                MouseX = mouseX;
+                MouseY = mouseY;
+                MouseX1 = mouseX1;
+                MouseY1 = mouseY1;
+
+            }
+        }
+        //pen settings
+        public class PenSettings
+        {
+            public Pen Pen { get; set; }
+            public List<Point> Points { get; set; }
+
+            public Shapes Shapes { get; set; }
+            public PenSettings(Pen pen, List<Point> points, Shapes shape)
+            {
+
+                Pen = new Pen(pen.Color, pen.Width);
+                Pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
+                Points = points;
+                Shapes = new Shapes(Pen, shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
+            }
+
+        }
+        public class PenEllipseSettings : PenSettings
+        {
+            public PenEllipseSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
+            {
+
+            }
+        }
+        public class PenSquareSettings : PenSettings
+        {
+            public PenSquareSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
+            {
+
+            }
+        }
+
+        public class PenCircleSettings : PenSettings
+        {
+            public PenCircleSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
+            {
+
+            }
+        }
+
+        public class PenLineSettings : PenSettings
+        {
+            public PenLineSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
+            {
+
+            }
+        }
+        public class PenFreestyleSettings : PenSettings
+        {
+            public PenFreestyleSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
+            {
+
+            }
+        }
+
+        //custom Menu strip color
+        public class ColorTable : ProfessionalColorTable
+        {
+            Color color = Color.FromArgb(63, 63, 65);
+
+            public override Color MenuItemSelected
+            {
+                get { return Color.Gray; }
+            }
+
+            public override Color MenuBorder  //added for changing the menu border
+            {
+                get { return Color.Transparent; }
+            }
+
+
+            public override Color MenuItemBorder
+            {
+                get { return color; }
+            }
+
+            public override Color MenuItemSelectedGradientBegin
+            {
+                get { return color; }
+            }
+
+            public override Color MenuItemSelectedGradientEnd
+            {
+                get { return color; }
+            }
+
+            public override Color MenuItemPressedGradientBegin
+            {
+                get { return color; }
+            }
+
+            public override Color MenuItemPressedGradientEnd
+            {
+                get { return color; }
+            }
+
+        }
+
 
     }
-    public class DataEntry
-    {
-       public String Name { get; set; }
-       public  String timeStamp { get; set; }
-        public DataEntry(String name) 
-        {
-            Name = name;
-            timeStamp = DateTime.Now.ToString();
-        }
-    }
-    public class Shapes
-    {
-        public Pen Pen { get; set; }
-        public int MouseX { get; set; }
-        public int MouseY { get; set; }
-        public int MouseX1 { get; set; }
-        public int MouseY1 { get; set; }
-
-        public Shapes(Pen pen, int mouseX, int mouseY, int mouseX1, int mouseY1)
-        {
-            Pen = new Pen(pen.Color, pen.Width);
-            MouseX = mouseX;
-            MouseY = mouseY;
-            MouseX1 = mouseX1;
-            MouseY1 = mouseY1;
-
-        }
-    }
-    //pen settings
-    public class PenSettings
-    {
-        public Pen Pen { get; set; }
-        public List<Point> Points { get; set; }
-
-        public Shapes Shapes { get; set; }
-        public PenSettings(Pen pen, List<Point> points, Shapes shape)
-        {
-
-            Pen = new Pen(pen.Color, pen.Width);
-            Pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
-            Points = points;
-            Shapes = new Shapes(Pen, shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
-        }
-
-    }
-    public class PenEllipseSettings : PenSettings
-    {
-        public PenEllipseSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
-        {
-
-        }
-    }
-    public class PenSquareSettings : PenSettings
-    {
-        public PenSquareSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
-        {
-
-        }
-    }
-
-    public class PenCircleSettings : PenSettings
-    {
-        public PenCircleSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
-        {
-
-        }
-    }
-
-    public class PenLineSettings : PenSettings
-    {
-        public PenLineSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
-        {
-
-        }
-    }
-    public class PenFreestyleSettings : PenSettings
-    {
-        public PenFreestyleSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
-        {
-
-        }
-    }
-
-    //custom Menu strip color
-    public class ColorTable : ProfessionalColorTable
-    {
-        Color color = Color.FromArgb(63, 63, 65);
-
-        public override Color MenuItemSelected
-        {
-            get { return Color.Gray; }
-        }
-
-        public override Color MenuBorder  //added for changing the menu border
-        {
-            get { return Color.Transparent; }
-        }
-
-
-        public override Color MenuItemBorder
-        {
-            get { return color; }
-        }
-
-        public override Color MenuItemSelectedGradientBegin
-        {
-            get { return color; }
-        }
-
-        public override Color MenuItemSelectedGradientEnd
-        {
-            get { return color; }
-        }
-
-        public override Color MenuItemPressedGradientBegin
-        {
-            get { return color; }
-        }
-
-        public override Color MenuItemPressedGradientEnd
-        {
-            get { return color; }
-        }
-
-    }
-
-
 }
