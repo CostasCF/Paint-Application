@@ -495,16 +495,16 @@ namespace drawing_application_p19057
         private void openToolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
-            clearningSequence(); //cleaning everything before opening a new file so we can avoid memory leaks.
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
-            openFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+            openFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif|PNG Image|*.png";
             openFileDialog1.Title = "Open an Image File";
 
             // saveFileDialog1.FilterIndex = 2;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 bmp = new Bitmap(openFileDialog1.OpenFile());
+                clearningSequence(); //cleaning everything before opening a new file so we can avoid memory leaks.
                 drawingBox.Image = bmp;
                 DisplayWarning("Opened file image: " + openFileDialog1.FileName.ToString(), 9000);
             }
@@ -514,7 +514,7 @@ namespace drawing_application_p19057
         {
             // Displays a SaveFileDialog so the user can save the Image they drawed
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+            saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif|PNG Image|*.png";
             saveFileDialog1.Title = "Save an Image File";
             saveFileDialog1.ShowDialog();
 
@@ -547,6 +547,12 @@ namespace drawing_application_p19057
                         bmp = new Bitmap(drawingBox.ClientSize.Width, drawingBox.ClientSize.Height);
                         drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
                         bmp.Save(fs, ImageFormat.Gif);
+                        DisplayWarning("Saved image succesfully to " + fs.Name.ToString(), 9000);
+                        break;
+                    case 4:
+                        bmp = new Bitmap(drawingBox.ClientSize.Width, drawingBox.ClientSize.Height);
+                        drawingBox.DrawToBitmap(bmp, drawingBox.ClientRectangle);
+                        bmp.Save(fs, ImageFormat.Png);
                         DisplayWarning("Saved image succesfully to " + fs.Name.ToString(), 9000);
                         break;
                 }
@@ -887,7 +893,7 @@ namespace drawing_application_p19057
         private void openAsTimelapseToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            clearningSequence(); //cleaning everything before opening a new file so we can avoid memory leaks.
+            
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
            
             openFileDialog1.Filter = "Timelapse file|*.timelapse";
@@ -895,11 +901,13 @@ namespace drawing_application_p19057
             // saveFileDialog1.FilterIndex = 2;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                openFileDialog1.OpenFile();
+                clearningSequence(); //cleaning everything before opening a new file so we can avoid memory leaks.
                 timelapseName = openFileDialog1.FileName;
                 drawings.Clear();
                 drawings = Serialize.DeserializeTimelapseSettings(timelapseName);
               
-                openFileDialog1.OpenFile();
+             
                 timelapseSettings = new TimelapseSettings(drawings[0].Name, drawings[0].AllcurvesTl, drawings[0].SecondsAnimation, new Shapes(drawings[0].Shapes.MouseX, drawings[0].Shapes.MouseY, drawings[0].Shapes.MouseX1, drawings[0].Shapes.MouseY1));
                 timelapseSettings.timerStarter(); //timer starts
                 DisplayWarning("Opened file image: " + openFileDialog1.FileName.ToString(), 9000);
