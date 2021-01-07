@@ -71,7 +71,7 @@ namespace drawing_application_p19057
             this.positionX = new System.Windows.Forms.Label();
             this.eraserBtn = new System.Windows.Forms.Button();
             this.ellipseBtn = new System.Windows.Forms.Button();
-            this.penWidth = new System.Windows.Forms.TrackBar();
+            this.penWidthControl = new System.Windows.Forms.TrackBar();
             this.moreColors = new System.Windows.Forms.PictureBox();
             this.greenBox = new System.Windows.Forms.PictureBox();
             this.yellowBox = new System.Windows.Forms.PictureBox();
@@ -102,7 +102,7 @@ namespace drawing_application_p19057
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.menuPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.penWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.penWidthControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.moreColors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.greenBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yellowBox)).BeginInit();
@@ -161,7 +161,7 @@ namespace drawing_application_p19057
             this.helpToolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(48, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(307, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(187, 25);
             this.menuStrip1.TabIndex = 3;
             // 
             // fileToolStripMenuItem1
@@ -348,26 +348,26 @@ namespace drawing_application_p19057
             // houseToolStripMenuItem
             // 
             this.houseToolStripMenuItem.Name = "houseToolStripMenuItem";
-            this.houseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.houseToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.houseToolStripMenuItem.Text = "House";
             this.houseToolStripMenuItem.Click += new System.EventHandler(this.houseToolStripMenuItem_Click);
             // 
             // grassToolStripMenuItem
             // 
             this.grassToolStripMenuItem.Name = "grassToolStripMenuItem";
-            this.grassToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.grassToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.grassToolStripMenuItem.Text = "Grass";
             // 
             // personToolStripMenuItem
             // 
             this.personToolStripMenuItem.Name = "personToolStripMenuItem";
-            this.personToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.personToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.personToolStripMenuItem.Text = "Person";
             // 
             // skyToolStripMenuItem
             // 
             this.skyToolStripMenuItem.Name = "skyToolStripMenuItem";
-            this.skyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.skyToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.skyToolStripMenuItem.Text = "Sky";
             // 
             // helpToolStripMenuItem1
@@ -464,7 +464,7 @@ namespace drawing_application_p19057
             this.menuPanel.Controls.Add(this.positionX);
             this.menuPanel.Controls.Add(this.eraserBtn);
             this.menuPanel.Controls.Add(this.ellipseBtn);
-            this.menuPanel.Controls.Add(this.penWidth);
+            this.menuPanel.Controls.Add(this.penWidthControl);
             this.menuPanel.Controls.Add(this.moreColors);
             this.menuPanel.Controls.Add(this.greenBox);
             this.menuPanel.Controls.Add(this.yellowBox);
@@ -544,17 +544,17 @@ namespace drawing_application_p19057
             this.ellipseBtn.Click += new System.EventHandler(this.ellipseBtn_Click);
             this.ellipseBtn.MouseHover += new System.EventHandler(this.ellipseBtn_MouseHover);
             // 
-            // penWidth
+            // penWidthControl
             // 
-            this.penWidth.Location = new System.Drawing.Point(9, 246);
-            this.penWidth.Minimum = 1;
-            this.penWidth.Name = "penWidth";
-            this.penWidth.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.penWidth.Size = new System.Drawing.Size(45, 185);
-            this.penWidth.TabIndex = 10;
-            this.penWidth.Value = 1;
-            this.penWidth.Scroll += new System.EventHandler(this.penWidth_Scroll);
-            this.penWidth.MouseHover += new System.EventHandler(this.penWidth_MouseHover);
+            this.penWidthControl.Location = new System.Drawing.Point(9, 246);
+            this.penWidthControl.Minimum = 1;
+            this.penWidthControl.Name = "penWidthControl";
+            this.penWidthControl.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.penWidthControl.Size = new System.Drawing.Size(45, 185);
+            this.penWidthControl.TabIndex = 10;
+            this.penWidthControl.Value = 1;
+            this.penWidthControl.Scroll += new System.EventHandler(this.penWidth_Scroll);
+            this.penWidthControl.MouseHover += new System.EventHandler(this.penWidth_MouseHover);
             // 
             // moreColors
             // 
@@ -782,7 +782,7 @@ namespace drawing_application_p19057
             this.menuStrip1.PerformLayout();
             this.menuPanel.ResumeLayout(false);
             this.menuPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.penWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.penWidthControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.moreColors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.greenBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yellowBox)).EndInit();
@@ -843,7 +843,7 @@ namespace drawing_application_p19057
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label warningLbl;
-        private System.Windows.Forms.TrackBar penWidth;
+        private System.Windows.Forms.TrackBar penWidthControl;
         private System.Windows.Forms.Button ellipseBtn;
         private AboutControl aboutControl;
         private System.Windows.Forms.Button eraserBtn;
