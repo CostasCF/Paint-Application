@@ -54,10 +54,11 @@ namespace drawing_application_p19057
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.houseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.boobiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pussyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.personToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -66,8 +67,6 @@ namespace drawing_application_p19057
             this.maximizeBtn = new System.Windows.Forms.Button();
             this.minimizeBtn = new System.Windows.Forms.Button();
             this.menuPanel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.positionY = new System.Windows.Forms.Label();
             this.positionX = new System.Windows.Forms.Label();
             this.eraserBtn = new System.Windows.Forms.Button();
@@ -98,6 +97,7 @@ namespace drawing_application_p19057
             this.squareTip = new System.Windows.Forms.ToolTip(this.components);
             this.penSizeTip = new System.Windows.Forms.ToolTip(this.components);
             this.timelapseTimer = new System.Windows.Forms.Timer(this.components);
+            this.dragDropLabel = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -161,7 +161,7 @@ namespace drawing_application_p19057
             this.helpToolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(48, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(187, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(307, 25);
             this.menuStrip1.TabIndex = 3;
             // 
             // fileToolStripMenuItem1
@@ -319,7 +319,8 @@ namespace drawing_application_p19057
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.optionsToolStripMenuItem1});
+            this.optionsToolStripMenuItem1,
+            this.addToolStripMenuItem});
             this.toolsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
@@ -328,39 +329,46 @@ namespace drawing_application_p19057
             // 
             // optionsToolStripMenuItem1
             // 
-            this.optionsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.houseToolStripMenuItem,
-            this.dickToolStripMenuItem,
-            this.boobiesToolStripMenuItem,
-            this.pussyToolStripMenuItem});
             this.optionsToolStripMenuItem1.Name = "optionsToolStripMenuItem1";
-            this.optionsToolStripMenuItem1.Size = new System.Drawing.Size(185, 22);
-            this.optionsToolStripMenuItem1.Text = "Create a timelapse";
+            this.optionsToolStripMenuItem1.Size = new System.Drawing.Size(182, 22);
+            this.optionsToolStripMenuItem1.Text = "Watch a timelapse";
             this.optionsToolStripMenuItem1.Click += new System.EventHandler(this.optionsToolStripMenuItem1_Click);
+            // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.houseToolStripMenuItem,
+            this.grassToolStripMenuItem,
+            this.personToolStripMenuItem,
+            this.skyToolStripMenuItem});
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.addToolStripMenuItem.Text = "Quick Add";
             // 
             // houseToolStripMenuItem
             // 
             this.houseToolStripMenuItem.Name = "houseToolStripMenuItem";
-            this.houseToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.houseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.houseToolStripMenuItem.Text = "House";
+            this.houseToolStripMenuItem.Click += new System.EventHandler(this.houseToolStripMenuItem_Click);
             // 
-            // dickToolStripMenuItem
+            // grassToolStripMenuItem
             // 
-            this.dickToolStripMenuItem.Name = "dickToolStripMenuItem";
-            this.dickToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.dickToolStripMenuItem.Text = "Dick";
+            this.grassToolStripMenuItem.Name = "grassToolStripMenuItem";
+            this.grassToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.grassToolStripMenuItem.Text = "Grass";
             // 
-            // boobiesToolStripMenuItem
+            // personToolStripMenuItem
             // 
-            this.boobiesToolStripMenuItem.Name = "boobiesToolStripMenuItem";
-            this.boobiesToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.boobiesToolStripMenuItem.Text = "Boobies";
+            this.personToolStripMenuItem.Name = "personToolStripMenuItem";
+            this.personToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.personToolStripMenuItem.Text = "Person";
             // 
-            // pussyToolStripMenuItem
+            // skyToolStripMenuItem
             // 
-            this.pussyToolStripMenuItem.Name = "pussyToolStripMenuItem";
-            this.pussyToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.pussyToolStripMenuItem.Text = "Pussy";
+            this.skyToolStripMenuItem.Name = "skyToolStripMenuItem";
+            this.skyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.skyToolStripMenuItem.Text = "Sky";
             // 
             // helpToolStripMenuItem1
             // 
@@ -452,8 +460,6 @@ namespace drawing_application_p19057
             // menuPanel
             // 
             this.menuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.menuPanel.Controls.Add(this.label1);
-            this.menuPanel.Controls.Add(this.label2);
             this.menuPanel.Controls.Add(this.positionY);
             this.menuPanel.Controls.Add(this.positionX);
             this.menuPanel.Controls.Add(this.eraserBtn);
@@ -473,32 +479,6 @@ namespace drawing_application_p19057
             this.menuPanel.Name = "menuPanel";
             this.menuPanel.Size = new System.Drawing.Size(51, 746);
             this.menuPanel.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Century", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(-3, 709);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(21, 16);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Y:";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Century", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(-3, 677);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(21, 16);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "X:";
             // 
             // positionY
             // 
@@ -758,8 +738,17 @@ namespace drawing_application_p19057
             this.aboutControl.Size = new System.Drawing.Size(558, 307);
             this.aboutControl.TabIndex = 5;
             // 
-            // timelapseTimer
+            // dragDropLabel
             // 
+            this.dragDropLabel.AutoSize = true;
+            this.dragDropLabel.BackColor = System.Drawing.Color.Transparent;
+            this.dragDropLabel.Font = new System.Drawing.Font("Century Gothic", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dragDropLabel.ForeColor = System.Drawing.Color.White;
+            this.dragDropLabel.Location = new System.Drawing.Point(319, 278);
+            this.dragDropLabel.Name = "dragDropLabel";
+            this.dragDropLabel.Size = new System.Drawing.Size(435, 116);
+            this.dragDropLabel.TabIndex = 6;
+            this.dragDropLabel.Text = "DRAG AND DROP\r\n     IMAGE HERE\r\n";
             // 
             // Form1
             // 
@@ -768,11 +757,12 @@ namespace drawing_application_p19057
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(1003, 783);
-            this.Controls.Add(this.aboutControl);
+            this.Controls.Add(this.dragDropLabel);
             this.Controls.Add(this.stripPanel2);
             this.Controls.Add(this.stripPanel);
             this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.topPanel);
+            this.Controls.Add(this.aboutControl);
             this.Controls.Add(this.drawingBox);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -800,6 +790,7 @@ namespace drawing_application_p19057
             ((System.ComponentModel.ISupportInitialize)(this.redBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.drawingBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -857,8 +848,6 @@ namespace drawing_application_p19057
         private AboutControl aboutControl;
         private System.Windows.Forms.Button eraserBtn;
         private System.Windows.Forms.Label positionX;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label positionY;
         private System.Windows.Forms.ToolTip penTip;
         private System.Windows.Forms.ToolTip eraserTip;
@@ -867,11 +856,13 @@ namespace drawing_application_p19057
         private System.Windows.Forms.ToolTip circleTip;
         private System.Windows.Forms.ToolTip squareTip;
         private System.Windows.Forms.ToolTip penSizeTip;
-        private System.Windows.Forms.ToolStripMenuItem houseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dickToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem boobiesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pussyToolStripMenuItem;
         private System.Windows.Forms.Timer timelapseTimer;
+        private System.Windows.Forms.Label dragDropLabel;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem houseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem grassToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem personToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem skyToolStripMenuItem;
     }
 }
 

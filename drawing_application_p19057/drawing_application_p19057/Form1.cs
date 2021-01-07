@@ -7,9 +7,10 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
-
 
 namespace drawing_application_p19057
 {
@@ -35,6 +36,7 @@ namespace drawing_application_p19057
         private Bitmap bmp;
         PrintDialog pd;
         PrintDocument doc;
+        PenSettings pensettings;
         Color colorSelected = Color.Black;
         // Tools for drag and drop images inside the drawingBox
         protected bool validData;
@@ -48,7 +50,7 @@ namespace drawing_application_p19057
         private bool squareActive = false;
         private bool ellipseActive = false;
         private bool eraserActive = false;
-        private int mouseDownX, mouseDownY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
+        public int mouseDownX, mouseDownY, mouseX1, mouseY1, mouseMoveX, mouseMoveY;
         private bool undoActive;
         private bool timelapse;
         private bool mouseDown = false;
@@ -68,6 +70,7 @@ namespace drawing_application_p19057
             penBtn.BackColor = Color.Silver;
             undoToolStripMenuItem.Enabled = false;
             redoToolStripMenuItem.Enabled = false;
+            dragDropLabel.Hide();
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -168,10 +171,10 @@ namespace drawing_application_p19057
         //drawing settings
         private void drawingBox_MouseUp(object sender, MouseEventArgs e)
         {
+            mouseX1 = e.X;
+            mouseY1 = e.Y;
             if (ellipseActive)
-            {
-                mouseX1 = e.X;
-                mouseY1 = e.Y;
+            {     
                 PenEllipseSettings penSettings = new PenEllipseSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 drawingBox.Invalidate();
@@ -181,9 +184,6 @@ namespace drawing_application_p19057
 
             if (circleActive)
             {
-
-                mouseX1 = e.X;
-                mouseY1 = e.Y;
                 PenCircleSettings penSettings = new PenCircleSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 drawingBox.Invalidate();
@@ -192,8 +192,6 @@ namespace drawing_application_p19057
             }
             if (squareActive)
             {
-                mouseX1 = e.X;
-                mouseY1 = e.Y;
                 rectX = Math.Min(mouseDownX, mouseX1); //min between start X-value and current X value
                 rectY = Math.Min(mouseDownY, mouseY1);
                 rectWidth = Math.Abs(mouseDownX - mouseX1); // the width value should be the maximum between the start X- position and the current X position
@@ -206,8 +204,6 @@ namespace drawing_application_p19057
             }
             if (lineActive)
             {
-                mouseX1 = e.X;
-                mouseY1 = e.Y;
                 PenLineSettings penSettings = new PenLineSettings(pen, currentCurve.ToList(), new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
                 Allcurves.Add(penSettings);
                 drawingBox.Invalidate();
@@ -687,7 +683,9 @@ namespace drawing_application_p19057
                     Application.DoEvents();
                     Thread.Sleep(0);
                 }
+                dragDropLabel.Hide();
                 drawingBox.Image = image;
+
 
             }
         }
@@ -708,7 +706,9 @@ namespace drawing_application_p19057
             validData = GetFilename(out filename, e);
             if (validData)
             {
-                drawingBox.BackColor = Color.Red;
+                dragDropLabel.Show();
+                dragDropLabel.BackColor = Color.FromArgb(25, Color.Black);
+                drawingBox.BackColor = Color.FromArgb(25, Color.Black);
                 path = filename;
                 getImageThread = new Thread(new ThreadStart(LoadImage));
                 getImageThread.Start();
@@ -723,6 +723,7 @@ namespace drawing_application_p19057
         private void Form1_DragLeave(object sender, EventArgs e)
         {
             drawingBox.BackColor = Color.White;
+            dragDropLabel.Hide();
 
         }
 
@@ -840,6 +841,7 @@ namespace drawing_application_p19057
             }
         }
 
+
         //tools settings
         private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -847,35 +849,67 @@ namespace drawing_application_p19057
 
         }
 
-      //  List<TimelapseSettings> autoCurves = new List<TimelapseSettings>();
+        //house button
+        private void houseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SavingCurves();
+           // ExecutingTimelapse();
+        }
+        //  List<TimelapseSettings> autoCurves = new List<TimelapseSettings>();
         TimelapseSettings timelapseSettings;
         private void creatingTimelapse()
         {
-            timelapseSettings = new TimelapseSettings("House", Allcurves, 2);
+            timelapseSettings = new TimelapseSettings("House", Allcurves, 2, new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
             Console.WriteLine("Made timelapseSettings");
             clearningSequence();
-            timelapseSettings.DrawShape(); //timer starts
+            timelapseSettings.timerStarter(); //timer starts
             Console.WriteLine("Drew timelapse");
+        }
+        List<TimelapseSettings> drawings = new List<TimelapseSettings>();
 
-        
+        private void SavingCurves()
+        {
+           timelapseSettings = new  TimelapseSettings("House", Allcurves, 2, new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
+            drawings.Add(timelapseSettings);
+            Serialize.SerializeTimelapseSettings(drawings) ;
+            Console.WriteLine("Made timelapseSettings");
+        }
+        private void ExecutingTimelapse()
+        {
+            drawings = Serialize.DeserializeTimelapseSettings();
+            timelapseSettings = new TimelapseSettings("House", drawings, 2, new Shapes(pen, mouseDownX, mouseDownY, mouseX1, mouseY1));
+
+            Console.WriteLine("Drew timelapse");
         }
         //timelapseSettings
+        [Serializable]
         public class TimelapseSettings
         {
             public string Name { get; set; }
             public List<PenSettings> AllcurvesTl { get; set; }
             public int ListIndex { get; set; } = 0;
+            public int SecondsAnimation { get; set; } = 0;
+
+            public Shapes Shapes { get; set; }
+            [NonSerialized]
             Form1 form;
+            [NonSerialized]
             public System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            public TimelapseSettings(string name, List<PenSettings> allcurvesTimelapse, int durationSeconds)
+          
+            public TimelapseSettings(string name, List<PenSettings> allcurvesTimelapse, int secondsAnimation, Shapes shape)
             {
                 Name = name;
                 AllcurvesTl = allcurvesTimelapse.ToList();
+                SecondsAnimation = secondsAnimation;
+                Shapes = new Shapes(new Pen(shape.PenColor,shape.PenWidth), shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
+                //   Shapes = new Shapes(allcurvesTimelapse, shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
+
                 //adding the tick event to the timer
                 timer.Tick += new EventHandler(timelapseTimer_Tick);
-
-                //finding the interval based on the desired animation's duration of it.
-                timer.Interval = (durationSeconds * 1000) / AllcurvesTl.Count;
+                if (AllcurvesTl.Count > 0) { 
+                      //finding the interval based on the desired animation's duration of it.
+                      timer.Interval = (secondsAnimation * 1000) / AllcurvesTl.Count;
+                 }
             }
       
             private void timelapseTimer_Tick(object sender, EventArgs e)
@@ -893,14 +927,57 @@ namespace drawing_application_p19057
                     timer.Stop();
                 }
             }
-            public void DrawShape()
+
+
+            public void timerStarter()
             {
                 form = (Form1)Application.OpenForms[0];
                 timer.Start(); //starts the timer
             }
         }
+      
+        public static class Serialize
+        {
+            public static void SerializeTimelapseSettings(List<TimelapseSettings> drawings)
+            {
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream("House.kostas", FileMode.OpenOrCreate, FileAccess.Write);
 
+                formatter.Serialize(stream, drawings);
 
+                stream.Close();
+            }
+            public static List<TimelapseSettings> DeserializeTimelapseSettings()
+            {
+
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream("House.kostas", FileMode.OpenOrCreate, FileAccess.Read);
+                List<TimelapseSettings> drawingsDeserialized =  (List<TimelapseSettings>)formatter.Deserialize(stream);
+              
+                for(int i = 0; i<drawingsDeserialized.Count; i++)
+                {
+                    Color penColor;
+                    float penWidth;
+                    Shapes shape;
+                    for (int j = 0; j<drawingsDeserialized[i].AllcurvesTl.Count; j++)
+                    {
+                        
+                         penColor = drawingsDeserialized[i].AllcurvesTl[j].PenColor;
+                         penWidth = drawingsDeserialized[i].AllcurvesTl[j].PenWidth;
+                        List<Point> points = drawingsDeserialized[i].AllcurvesTl[j].Points;
+                        shape = new Shapes(new Pen(penColor, penWidth), drawingsDeserialized[i].Shapes.MouseX, drawingsDeserialized[i].Shapes.MouseY, drawingsDeserialized[i].Shapes.MouseX1,drawingsDeserialized[i].Shapes.MouseY1);
+                        drawingsDeserialized[i].AllcurvesTl[j] = new PenSettings(new Pen(penColor, penWidth), points, shape );
+                        drawingsDeserialized[i] = new TimelapseSettings(drawingsDeserialized[i].Name, drawingsDeserialized[i].AllcurvesTl, drawingsDeserialized[i].SecondsAnimation, shape);
+                    }
+
+                    
+                }
+                
+                stream.Close();
+                return drawingsDeserialized;
+            }
+
+        }
         public class DataEntry
         {
             public String Name { get; set; }
@@ -912,19 +989,24 @@ namespace drawing_application_p19057
             }
         }
 
-       
+    
 
+        [Serializable]
         public class Shapes
         {
-            public Pen Pen { get; set; }
+            [NonSerialized]
+            public Pen Pen;
             public int MouseX { get; set; }
             public int MouseY { get; set; }
             public int MouseX1 { get; set; }
             public int MouseY1 { get; set; }
-
+            public Color PenColor { get; set; }
+            public float PenWidth { get; set; }
             public Shapes(Pen pen, int mouseX, int mouseY, int mouseX1, int mouseY1)
             {
-                Pen = new Pen(pen.Color, pen.Width);
+                PenColor = pen.Color;
+                PenWidth = pen.Width;
+                Pen = new Pen(PenColor, PenWidth);
                 MouseX = mouseX;
                 MouseY = mouseY;
                 MouseX1 = mouseX1;
@@ -933,22 +1015,27 @@ namespace drawing_application_p19057
             }
         }
         //pen settings
+        [Serializable]
         public class PenSettings
         {
-            public Pen Pen { get; set; }
+            [NonSerialized]
+            public Pen Pen;
             public List<Point> Points { get; set; }
-
+           public Color PenColor { get; set; }
+            public float PenWidth { get; set; }
             public Shapes Shapes { get; set; }
             public PenSettings(Pen pen, List<Point> points, Shapes shape)
             {
-
-                Pen = new Pen(pen.Color, pen.Width);
+                PenColor = pen.Color;
+                PenWidth = pen.Width;
+                Pen = new Pen(PenColor, PenWidth);
                 Pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
                 Points = points;
                 Shapes = new Shapes(Pen, shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
             }
 
         }
+        [Serializable]
         public class PenEllipseSettings : PenSettings
         {
             public PenEllipseSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
@@ -956,6 +1043,7 @@ namespace drawing_application_p19057
 
             }
         }
+        [Serializable]
         public class PenSquareSettings : PenSettings
         {
             public PenSquareSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
@@ -963,7 +1051,7 @@ namespace drawing_application_p19057
 
             }
         }
-
+        [Serializable]
         public class PenCircleSettings : PenSettings
         {
             public PenCircleSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
@@ -971,7 +1059,7 @@ namespace drawing_application_p19057
 
             }
         }
-
+        [Serializable]
         public class PenLineSettings : PenSettings
         {
             public PenLineSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
@@ -979,6 +1067,7 @@ namespace drawing_application_p19057
 
             }
         }
+        [Serializable]
         public class PenFreestyleSettings : PenSettings
         {
             public PenFreestyleSettings(Pen pen, List<Point> points, Shapes shape) : base(pen, points, shape)
