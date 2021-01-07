@@ -847,7 +847,8 @@ namespace drawing_application_p19057
         //house button
         private void houseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           //SavingCurves();
+           SavingCurves();
+           clearningSequence();
            ExecutingTimelapse();
         }
         //  List<TimelapseSettings> autoCurves = new List<TimelapseSettings>();
