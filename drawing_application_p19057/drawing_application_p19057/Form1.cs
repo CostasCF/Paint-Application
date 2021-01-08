@@ -237,8 +237,8 @@ namespace drawing_application_p19057
 
                 drawingBox.Invalidate();
             }
-            if (ellipseActive && e.Button == MouseButtons.Left)
-            { //ellipse preview
+            if (ellipseActive && e.Button == MouseButtons.Left) //ellipse preview
+            { 
                 mouseMoveX = e.X;
                 mouseMoveY = e.Y;
                 drawingBox.Invalidate();
@@ -322,9 +322,6 @@ namespace drawing_application_p19057
             if (lineActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawLine(pen, mouseDownX, mouseDownY, mouseMoveX, mouseMoveY); } //line preview
             if (currentCurve.Count > 1) { pen.DashCap = System.Drawing.Drawing2D.DashCap.Round; e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawCurve(pen, currentCurve.ToArray()); } //freestyle "preview"
 
-
-
-            //timelapse
 
         }
         private void eraserBtn_Click(object sender, EventArgs e)
@@ -471,6 +468,15 @@ namespace drawing_application_p19057
             if (eraserActive == false)
             {
                 colorSelected = Color.Green;
+                pen = new Pen(colorSelected, penWidthControl.Value);
+
+            }
+        }
+        private void blackBox_Click(object sender, EventArgs e)
+        {
+            if (eraserActive == false)
+            {
+                colorSelected = Color.Black;
                 pen = new Pen(colorSelected, penWidthControl.Value);
 
             }
@@ -923,8 +929,8 @@ namespace drawing_application_p19057
         {
             ExecutingGrassTimelapse();
         }
-        //person add button
-        private void personToolStripMenuItem_Click(object sender, EventArgs e)
+        //trees add button
+        private void treesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExecutingTreesTimelapse();
         }
@@ -1053,6 +1059,7 @@ namespace drawing_application_p19057
             }
 
         }
+
         public class DataEntry
         {
             public String Name { get; set; }
@@ -1064,7 +1071,7 @@ namespace drawing_application_p19057
             }
         }
 
-     
+   
 
         [Serializable]
         public class Shapes //holds the coordinates of the shapes

@@ -102,6 +102,7 @@ namespace drawing_application_p19057
             this.dragDropLabel = new System.Windows.Forms.Label();
             this.aboutControl = new drawing_application_p19057.AboutControl();
             this.drawingBox = new System.Windows.Forms.PictureBox();
+            this.blackBox = new System.Windows.Forms.PictureBox();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -113,6 +114,7 @@ namespace drawing_application_p19057
             ((System.ComponentModel.ISupportInitialize)(this.blueBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.redBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.drawingBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blackBox)).BeginInit();
             this.SuspendLayout();
             // 
             // topPanel
@@ -165,7 +167,7 @@ namespace drawing_application_p19057
             this.helpToolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(48, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(307, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(187, 25);
             this.menuStrip1.TabIndex = 3;
             // 
             // fileToolStripMenuItem1
@@ -385,7 +387,7 @@ namespace drawing_application_p19057
             this.treesToolStripMenuItem.Name = "treesToolStripMenuItem";
             this.treesToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.treesToolStripMenuItem.Text = "Trees";
-            this.treesToolStripMenuItem.Click += new System.EventHandler(this.personToolStripMenuItem_Click);
+            this.treesToolStripMenuItem.Click += new System.EventHandler(this.treesToolStripMenuItem_Click);
             // 
             // skyToolStripMenuItem
             // 
@@ -496,6 +498,7 @@ namespace drawing_application_p19057
             this.menuPanel.Controls.Add(this.yellowBox);
             this.menuPanel.Controls.Add(this.blueBox);
             this.menuPanel.Controls.Add(this.redBox);
+            this.menuPanel.Controls.Add(this.blackBox);
             this.menuPanel.Controls.Add(this.circleBtn);
             this.menuPanel.Controls.Add(this.squareBtn);
             this.menuPanel.Controls.Add(this.lineBtn);
@@ -614,7 +617,7 @@ namespace drawing_application_p19057
             this.moreColors.BackgroundImage = global::drawing_application_p19057.Properties.Resources.menu_vertical_48px;
             this.moreColors.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.moreColors.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.moreColors.Location = new System.Drawing.Point(9, 576);
+            this.moreColors.Location = new System.Drawing.Point(9, 616);
             this.moreColors.Name = "moreColors";
             this.moreColors.Size = new System.Drawing.Size(33, 40);
             this.moreColors.TabIndex = 9;
@@ -802,6 +805,17 @@ namespace drawing_application_p19057
             this.drawingBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseMove);
             this.drawingBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseUp);
             // 
+            // blackBox
+            // 
+            this.blackBox.BackColor = System.Drawing.Color.Black;
+            this.blackBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.blackBox.Location = new System.Drawing.Point(9, 580);
+            this.blackBox.Name = "blackBox";
+            this.blackBox.Size = new System.Drawing.Size(33, 30);
+            this.blackBox.TabIndex = 16;
+            this.blackBox.TabStop = false;
+            this.blackBox.Click += new System.EventHandler(this.blackBox_Click);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -841,6 +855,7 @@ namespace drawing_application_p19057
             ((System.ComponentModel.ISupportInitialize)(this.blueBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.redBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.drawingBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blackBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -919,6 +934,7 @@ namespace drawing_application_p19057
         private System.Windows.Forms.ToolStripMenuItem saveAsTimelapseToolStripMenuItem;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox blackBox;
     }
 }
 
