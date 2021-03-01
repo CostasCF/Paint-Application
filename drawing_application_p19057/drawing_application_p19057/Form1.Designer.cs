@@ -81,6 +81,7 @@ namespace drawing_application_p19057
             this.yellowBox = new System.Windows.Forms.PictureBox();
             this.blueBox = new System.Windows.Forms.PictureBox();
             this.redBox = new System.Windows.Forms.PictureBox();
+            this.blackBox = new System.Windows.Forms.PictureBox();
             this.circleBtn = new System.Windows.Forms.Button();
             this.squareBtn = new System.Windows.Forms.Button();
             this.lineBtn = new System.Windows.Forms.Button();
@@ -102,7 +103,6 @@ namespace drawing_application_p19057
             this.dragDropLabel = new System.Windows.Forms.Label();
             this.aboutControl = new drawing_application_p19057.AboutControl();
             this.drawingBox = new System.Windows.Forms.PictureBox();
-            this.blackBox = new System.Windows.Forms.PictureBox();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPaint)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -113,8 +113,8 @@ namespace drawing_application_p19057
             ((System.ComponentModel.ISupportInitialize)(this.yellowBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blueBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.redBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.drawingBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blackBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.drawingBox)).BeginInit();
             this.SuspendLayout();
             // 
             // topPanel
@@ -671,6 +671,17 @@ namespace drawing_application_p19057
             this.redBox.TabStop = false;
             this.redBox.Click += new System.EventHandler(this.redBox_Click);
             // 
+            // blackBox
+            // 
+            this.blackBox.BackColor = System.Drawing.Color.Black;
+            this.blackBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.blackBox.Location = new System.Drawing.Point(9, 580);
+            this.blackBox.Name = "blackBox";
+            this.blackBox.Size = new System.Drawing.Size(33, 30);
+            this.blackBox.TabIndex = 16;
+            this.blackBox.TabStop = false;
+            this.blackBox.Click += new System.EventHandler(this.blackBox_Click);
+            // 
             // circleBtn
             // 
             this.circleBtn.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -805,17 +816,6 @@ namespace drawing_application_p19057
             this.drawingBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseMove);
             this.drawingBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawingBox_MouseUp);
             // 
-            // blackBox
-            // 
-            this.blackBox.BackColor = System.Drawing.Color.Black;
-            this.blackBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.blackBox.Location = new System.Drawing.Point(9, 580);
-            this.blackBox.Name = "blackBox";
-            this.blackBox.Size = new System.Drawing.Size(33, 30);
-            this.blackBox.TabIndex = 16;
-            this.blackBox.TabStop = false;
-            this.blackBox.Click += new System.EventHandler(this.blackBox_Click);
-            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -854,8 +854,8 @@ namespace drawing_application_p19057
             ((System.ComponentModel.ISupportInitialize)(this.yellowBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blueBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.redBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.drawingBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blackBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.drawingBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

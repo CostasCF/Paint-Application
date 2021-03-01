@@ -75,8 +75,6 @@ namespace drawing_application_p19057
         {
             conn = new SQLiteConnection(connectionString);
         }
-
-
         //general settings
         private void minimizeBtn_Click(object sender, EventArgs e)
         {
@@ -297,7 +295,7 @@ namespace drawing_application_p19057
                     {
                         PenFreestyleSettings penFreestyleSettings = (PenFreestyleSettings)penSettigns;
                         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; //smoothing the lines
-                        if (penFreestyleSettings.Points.Count > 1) e.Graphics.DrawCurve(new Pen(penFreestyleSettings.PenColor, penFreestyleSettings.PenWidth), penFreestyleSettings.Points.ToArray());
+                        if (penFreestyleSettings.Points.Count > 1) e.Graphics.DrawCurve(new Pen(penFreestyleSettings.PenColor, penFreestyleSettings.PenWidth), penFreestyleSettings.Points.ToArray(), 0.0f);
                     }
                     else
                     if (penSettigns is PenSquareSettings)
@@ -320,7 +318,7 @@ namespace drawing_application_p19057
             if (ellipseActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveX - mouseDownX, mouseMoveY - mouseDownY); }//ellipse preview
             if (circleActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawEllipse(pen, mouseDownX, mouseDownY, mouseMoveY - mouseDownY, mouseMoveY - mouseDownY); }  //circle preview
             if (lineActive && (!undoActive) && mouseDown) { e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawLine(pen, mouseDownX, mouseDownY, mouseMoveX, mouseMoveY); } //line preview
-            if (currentCurve.Count > 1) { pen.DashCap = System.Drawing.Drawing2D.DashCap.Round; e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawCurve(pen, currentCurve.ToArray()); } //freestyle "preview"
+            if (currentCurve.Count > 1) { pen.DashCap = System.Drawing.Drawing2D.DashCap.Round; e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; e.Graphics.DrawCurve(pen, currentCurve.ToArray(),0.0f); } //freestyle "preview"
 
 
         }
@@ -459,7 +457,6 @@ namespace drawing_application_p19057
             {
                 colorSelected = Color.Yellow;
                 pen = new Pen(colorSelected, penWidthControl.Value);
-
             }
         }
 
@@ -904,7 +901,6 @@ namespace drawing_application_p19057
            
             openFileDialog1.Filter = "Timelapse file|*.timelapse";
             openFileDialog1.Title = "Save as a Timelapse File";
-            // saveFileDialog1.FilterIndex = 2;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 openFileDialog1.OpenFile();
@@ -947,6 +943,7 @@ namespace drawing_application_p19057
             clearningSequence();
             timelapseSettings.timerStarter(); //timer starts
         }
+
         List<TimelapseSettings> drawings = new List<TimelapseSettings>();
 
 
@@ -968,7 +965,6 @@ namespace drawing_application_p19057
         private void ExecutingTreesTimelapse()
         {
             string name = "Trees.timelapse";
-
             drawings = Serialize.DeserializeTimelapseSettings(name);
             timelapseSettings = new TimelapseSettings(name, drawings[0].AllcurvesTl, drawings[0].SecondsAnimation, new Shapes(drawings[0].Shapes.MouseX, drawings[0].Shapes.MouseY, drawings[0].Shapes.MouseX1, drawings[0].Shapes.MouseY1));
             timelapseSettings.timerStarter(); //timer starts
@@ -1107,6 +1103,8 @@ namespace drawing_application_p19057
                 PenWidth = penWidth;
                 Pen = new Pen(PenColor, PenWidth);
                 Pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
+                Pen.MiterLimit = 1 + Pen.Width / 5f;
+                Pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
                 Points = points;
                 Shapes = new Shapes( shape.MouseX, shape.MouseY, shape.MouseX1, shape.MouseY1);
             }
