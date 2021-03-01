@@ -1,4 +1,4 @@
-# Painting-Application
+# Paint-Application
 
 A responsive paint application created with WinForms Visual C# on .NET Framework presenting some cool features.
 
