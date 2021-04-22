@@ -21,7 +21,7 @@ Picture5. Saving an Image File into a selected location.
 Picture6. Watch a live timelapse of your drawing.
 
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/52785685/109540170-ca3e6000-7aca-11eb-9261-0ee3d3a469d3.gif) <br>
-Picture7. A quick-add drawing feature. The application creates and addsd artificially for you some drawings.
+Picture7. A quick-add drawing feature. The application inserts artificially for you some drawings (etc. House, Grass, Sky, Trees).
 
 Furthermore, the application supports: <br>
 •Undo & Redo functionality <br>
