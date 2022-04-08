@@ -1,5 +1,5 @@
 ﻿
-namespace drawing_application_p19057
+namespace drawing_application
 {
     partial class AboutControl
     {
@@ -55,7 +55,7 @@ namespace drawing_application_p19057
             // iconPaint
             // 
             this.iconPaint.BackColor = System.Drawing.Color.Transparent;
-            this.iconPaint.BackgroundImage = global::drawing_application_p19057.Properties.Resources.icons8_paint_64;
+            this.iconPaint.BackgroundImage = global::drawing_application.Properties.Resources.icons8_paint_64;
             this.iconPaint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.iconPaint.Location = new System.Drawing.Point(9, 3);
             this.iconPaint.Name = "iconPaint";
@@ -67,7 +67,7 @@ namespace drawing_application_p19057
             // 
             this.exitBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.exitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(51)))));
-            this.exitBtn.BackgroundImage = global::drawing_application_p19057.Properties.Resources.x_24px;
+            this.exitBtn.BackgroundImage = global::drawing_application.Properties.Resources.x_24px;
             this.exitBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.exitBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.exitBtn.FlatAppearance.BorderSize = 0;

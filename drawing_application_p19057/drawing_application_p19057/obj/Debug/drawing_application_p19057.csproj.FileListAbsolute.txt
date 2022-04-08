@@ -1,8 +1,6 @@
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\drawing_application_p19057.exe.config
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\drawing_application_p19057.exe
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\drawing_application_p19057.pdb
-C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.csprojAssemblyReference.cache
-C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.Form1.resources
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.Properties.Resources.resources
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.csproj.GenerateResource.cache
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.csproj.CoreCompileInputs.cache
@@ -19,3 +17,6 @@ C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_applicatio
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\bin\Debug\System.Data.SQLite.xml
 C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.csproj.CopyComplete
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.csproj.AssemblyReference.cache
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.csproj.SuggestedBindingRedirects.cache
+C:\Users\kkalo\OneDrive\Documents\GitHub\Painting-Application\drawing_application_p19057\drawing_application_p19057\obj\Debug\drawing_application_p19057.MainWindow.resources
